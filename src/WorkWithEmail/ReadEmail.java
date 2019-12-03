@@ -1,7 +1,12 @@
 package WorkWithEmail;
 
+import com.sun.mail.util.MailSSLSocketFactory;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import javax.mail.*;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.Properties;
 
 /**
@@ -52,22 +57,35 @@ public class ReadEmail
      * @see ReadEmail#ReadEmail(String, String, String, String)
      */
     public ReadEmail(){
-        IMAP_AUTH_EMAIL = "molitvin1999@gmail.com";
-        IMAP_AUTH_PWD   = "1728Lack@n1425" ;
-        IMAP_Server     = "imap.gmail.com";
+        IMAP_AUTH_EMAIL = "lackan1@yandex.ua";
+        IMAP_AUTH_PWD   = "2813Andrei" ;
+        IMAP_Server     = "imap.yandex.ua";
         IMAP_Port       = "993";
     }
 
+    public String getIMAP_AUTH_EMAIL(){
+        return IMAP_AUTH_EMAIL;
+    }
     /**
      * Метод для реализации возможности чтения писем с сервера
      */
-    public void readEmailFromServer()
+    public ObservableList readEmailFromServer()
     {
+        ObservableList<String> messageList = FXCollections.observableArrayList();
         Properties properties = new Properties();
         properties.put("mail.debug"           , "false"  );
-        properties.put("mail.store.protocol"  , "imaps"  );
-        properties.put("mail.imap.ssl.enable" , "true"   );
-        properties.put("mail.imap.port"       , IMAP_Port);
+        properties.put("mail.store.protocol"  , "imap"  );
+
+        MailSSLSocketFactory sf = null;
+        try {
+            sf = new MailSSLSocketFactory();
+        } catch (GeneralSecurityException e) {
+            e.printStackTrace();
+        }
+        sf.setTrustAllHosts(true);
+        properties.put("mail.imap.starttls.enable", "true");
+        properties.put("mail.imap.ssl.socketFactory", sf);
+        properties.put("mail.imaps.port"       , IMAP_Port);
 
         Authenticator auth = new EmailAuthenticator(IMAP_AUTH_EMAIL, IMAP_AUTH_PWD);
         Session session = Session.getDefaultInstance(properties, auth);
@@ -87,7 +105,7 @@ public class ReadEmail
 
             //System.out.println("Количество сообщений : " + String.valueOf(inbox.getMessageCount()));
             if (inbox.getMessageCount() == 0)
-                return;
+                return null;
             // Последнее сообщение; первое сообщение под номером 1
             Message message = inbox.getMessage(inbox.getMessageCount());
             Multipart mp = (Multipart) message.getContent();
@@ -96,15 +114,18 @@ public class ReadEmail
                 BodyPart  bp = mp.getBodyPart(i);
                 if (bp.getFileName() == null)
                     System.out.println("    " + i + ". сообщение : '" + bp.getContent() + "'");
+                    //messageList.add(bp.getContent()+"");
                 else
                     System.out.println("    " + i + ". файл : '" + bp.getFileName() + "'");
+                    //messageList.add(bp.getFileName() + "");
             }
         } catch (NoSuchProviderException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
         } catch (MessagingException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
         } catch (IOException e) {
-            System.err.println(e.getMessage());
+            e.printStackTrace();
         }
+        return messageList;
     }
 }

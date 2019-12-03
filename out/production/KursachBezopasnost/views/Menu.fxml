@@ -65,6 +65,6 @@
       </HBox>
       <ChoiceBox fx:id="emailChoice" layoutX="14.0" layoutY="73.0" prefHeight="30.0" prefWidth="237.0" />
       <TreeView layoutX="14.0" layoutY="152.0" prefHeight="298.0" prefWidth="202.0" />
-      <ListView layoutX="227.0" layoutY="150.0" prefHeight="413.0" prefWidth="783.0" />
+      <ListView fx:id="emailListView" layoutX="227.0" layoutY="150.0" prefHeight="413.0" prefWidth="783.0" />
    </children>
 </AnchorPane>

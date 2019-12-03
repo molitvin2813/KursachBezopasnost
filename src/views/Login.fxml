@@ -6,11 +6,11 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" fx:id="parent" prefHeight="580.0" prefWidth="1024.0" styleClass="parent" stylesheets="@../css/Stylesheet.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LoginController">
+<AnchorPane id="AnchorPane" fx:id="parent" prefHeight="580.0" prefWidth="878.0" styleClass="parent" stylesheets="@../css/Stylesheet.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LoginController">
    <children>
-      <Pane fx:id="content" layoutY="35.0" prefHeight="545.0" prefWidth="1024.0">
+      <Pane fx:id="content" layoutY="35.0" prefHeight="545.0" prefWidth="959.0">
          <children>
-            <HBox alignment="CENTER_LEFT" layoutX="387.0" layoutY="194.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="250.0">
+            <HBox alignment="CENTER_LEFT" layoutX="592.0" layoutY="194.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="250.0">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="45.0" style="-fx-background-color: #363b41;">
 
@@ -22,7 +22,7 @@
                   </TextField>
                </children>
             </HBox>
-            <HBox alignment="CENTER_LEFT" layoutX="387.0" layoutY="249.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="250.0">
+            <HBox alignment="CENTER_LEFT" layoutX="592.0" layoutY="249.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="250.0">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="45.0" style="-fx-background-color: #363b41;">
 
@@ -34,22 +34,51 @@
                   </PasswordField>
                </children>
             </HBox>
-            <Button layoutX="387.0" layoutY="307.0" minHeight="-Infinity" minWidth="-Infinity" onAction="#handle_login" prefHeight="45.0" prefWidth="250.0" styleClass="login-btn" text="Войти">
+            <Button layoutX="592.0" layoutY="307.0" minHeight="-Infinity" minWidth="-Infinity" onAction="#handle_login" prefHeight="45.0" prefWidth="250.0" styleClass="login-btn" text="Войти">
                <font>
                   <Font name="Microsoft Sans Serif" size="15.0" />
                </font>
             </Button>
-            <ImageView fitHeight="45.0" fitWidth="45.0" layoutX="848.0" layoutY="62.0" pickOnBounds="true" preserveRatio="true" />
+            <HBox alignment="CENTER_LEFT" layoutX="90.0" layoutY="194.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="250.0">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="45.0" style="-fx-background-color: #363b41;" />
+                  <TextField fx:id="loginRegister" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="45.0" promptText="Логин" styleClass="txtfield" HBox.hgrow="ALWAYS">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" layoutX="90.0" layoutY="249.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="250.0">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="45.0" style="-fx-background-color: #363b41;" />
+                  <PasswordField fx:id="passwordRegister" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="45.0" promptText="Пароль" styleClass="txtfield" HBox.hgrow="ALWAYS">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </PasswordField>
+               </children>
+            </HBox>
+            <Button layoutX="90.0" layoutY="307.0" minHeight="-Infinity" minWidth="-Infinity" onAction="#registerButton" prefHeight="45.0" prefWidth="250.0" styleClass="login-btn" text="Зарегистрировать">
+               <font>
+                  <Font name="Microsoft Sans Serif" size="15.0" />
+               </font>
+            </Button>
+            <Button fx:id="slideBtn" minHeight="-Infinity" minWidth="-Infinity" onAction="#slideButton" prefHeight="554.0" prefWidth="458.0" styleClass="login-btn">
+               <font>
+                  <Font name="Microsoft Sans Serif" size="15.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
-      <HBox fx:id="top" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="1024.0">
+      <HBox fx:id="top" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="959.0">
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
          <children>
             <HBox HBox.hgrow="ALWAYS">
                <children>
-                  <Label fx:id="topLabel" text="Вход в систему" textFill="#c2c2c2">
+                  <Label fx:id="topLabel" text="Вход" textFill="#c2c2c2">
                      <font>
                         <Font size="15.0" />
                      </font>

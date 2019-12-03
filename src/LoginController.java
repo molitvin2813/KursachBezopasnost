@@ -11,6 +11,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
@@ -30,30 +31,45 @@ import java.sql.DriverManager;
  */
 public class LoginController implements Initializable {
 
-    public static java.sql.Connection con;
-    public static java.sql.Statement stmt;
-    public static java.sql.ResultSet rs;
+    public static java.sql.Connection con = null;
+    public static java.sql.Statement stmt = null;
+    public static java.sql.ResultSet rs = null;
 
     /**
      * адресс для подключение к MySQL
      */
     private static final String url = "jdbc:mysql://localhost:3306/kindergarten";
-
     /**
      * имя пользователя для подключения
      */
     private static final String user = "root";
-
     /**
      * пароль пользователя
      */
     private static final String password = "1234";
 
+    /**
+     * статическое поле, которое хранит логин пользователя
+     */
     public static String loginUser;
+    /**
+     * статическое поле, которое хранит идентифекатор пользователя
+     */
     public static String idUser;
+    /**
+     * Вспомогательная переменная для метода slideButton
+     * @see LoginController#slideButton(ActionEvent)
+     */
+    private int slide = 0;
 
     @FXML
-    public Label topLabel;
+    private Label topLabel;
+    @FXML
+    private Button slideBtn;
+    @FXML
+    private TextField loginRegister;
+    @FXML
+    private PasswordField passwordRegister;
     @FXML
     private AnchorPane parent;
     @FXML
@@ -79,6 +95,14 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        try {
+            con = DriverManager.getConnection("jdbc:mysql://localhost/my_mail_client", "root", "1234");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException e) {
@@ -109,7 +133,6 @@ public class LoginController implements Initializable {
         });
     }
 
-
     /**
      * Метод, который реализует вход пользователя
      * @param event событие
@@ -123,11 +146,8 @@ public class LoginController implements Initializable {
                 "(account_table.password ='"+passwordField.getText()+"');";
 
         try {
-            con = DriverManager.getConnection("jdbc:mysql://localhost/my_mail_client", "root", "1234");
-            // getting Statement object to execute query
             stmt = con.createStatement();
-
-            // executing SELECT query
+            // исполнение запроса
             rs = stmt.executeQuery(query);
 
             if (rs.next()) {
@@ -168,26 +188,63 @@ public class LoginController implements Initializable {
 
     /**
      * Метод для кнопки "закрыть"
+     * выполняется закрытие MySQL продключения
      * @param event событие мыши
      */
     @FXML
     private void close_app(MouseEvent event) {
         try {
-            con.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        try {
-            stmt.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        try {
-            rs.close();
+            if(!con.isClosed())
+                con.close();
+            if(stmt!=null)
+                stmt.close();
+            if(rs!=null)
+                rs.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         System.exit(0);
+    }
+
+    /**
+     * Код для кнопки регистрации
+     * Вставка соответствующих данных в таблицу account_table
+     * @param event событие
+     */
+    @FXML
+    private void registerButton(ActionEvent event){
+        String query = "INSERT INTO account_table (login, password) " +
+                "VALUES ('"+loginRegister.getText()+"', '"+passwordRegister.getText()+"');";
+
+        try {
+            stmt = con.createStatement();
+            stmt.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Обработчик для "слайдера", который позволяет выбрать функцию регистрации/входа
+     * Используется вспомогательная переменная slideBtn для реализации анимации
+     * @see LoginController#slideBtn
+     * @param event событие
+     */
+    @FXML
+    private void slideButton(ActionEvent event){
+        if(slide==0){
+            slideBtn.setLayoutX(500);
+            loginRegister.setText("");
+            passwordRegister.setText("");
+            topLabel.setText("Регистрация");
+            slide=1;
+        }
+        else if(slide==1){
+            slideBtn.setLayoutX(0);
+            loginField.setText("");
+            passwordField.setText("");
+            topLabel.setText("Вход");
+            slide=0;
+        }
     }
 }
