@@ -28,6 +28,11 @@
             <Font size="14.0" />
          </font>
       </Button>
+      <Button layoutX="385.0" layoutY="73.0" styleClass="login-btn" text="Добавить аккаунт">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
       <HBox fx:id="top" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="1024.0">
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
@@ -64,7 +69,7 @@
          </children>
       </HBox>
       <ChoiceBox fx:id="emailChoice" layoutX="14.0" layoutY="73.0" prefHeight="30.0" prefWidth="237.0" />
-      <TreeView layoutX="14.0" layoutY="152.0" prefHeight="298.0" prefWidth="202.0" />
-      <ListView fx:id="emailListView" layoutX="227.0" layoutY="150.0" prefHeight="413.0" prefWidth="783.0" />
+      <TreeView layoutX="14.0" layoutY="152.0" prefHeight="413.0" prefWidth="202.0" />
+      <ListView fx:id="emailListView" layoutX="227.0" layoutY="150.0" prefHeight="413.0" prefWidth="782.0" />
    </children>
 </AnchorPane>

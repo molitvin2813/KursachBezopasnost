@@ -21,6 +21,9 @@
     -fx-prompt-text-fill: #ADADAD;
     -fx-text-fill: #FFFFFF;
 }
+.slide-btn{
+    -fx-background-color: #3B4148;
+}
 .txtfield:focused{
     -fx-background-color:  #292C34;
     -fx-background-radius: 0px;
