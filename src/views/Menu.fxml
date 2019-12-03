@@ -6,34 +6,9 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane id="AnchorPane" fx:id="parent" prefHeight="580.0" prefWidth="1024.0" styleClass="parent" stylesheets="@../css/Stylesheet.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MenuController">
+<AnchorPane id="AnchorPane" fx:id="parent" minWidth="-Infinity" prefHeight="580.0" prefWidth="1252.0" styleClass="main-window-menu" stylesheets="@../css/Stylesheet.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MenuController">
    <children>
-      <Label layoutX="14.0" layoutY="43.0" text="Список почтовых ящиков" textFill="#adadad">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
-      <Label fx:id="labelFolders" layoutX="14.0" layoutY="111.0" text="Папки" textFill="#adadad">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </Label>
-      <Button layoutX="851.0" layoutY="71.0" onAction="#handle_logout" styleClass="login-btn" text="Sign Out">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
-      <Button layoutX="251.0" layoutY="73.0" onAction="#choiceEMail" styleClass="login-btn" text="Сменить аккаунт">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
-      <Button layoutX="385.0" layoutY="73.0" styleClass="login-btn" text="Добавить аккаунт">
-         <font>
-            <Font size="14.0" />
-         </font>
-      </Button>
-      <HBox fx:id="top" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="1024.0">
+      <HBox fx:id="top" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="901.0" styleClass="parent1">
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
@@ -68,8 +43,74 @@
                </graphic></Label>
          </children>
       </HBox>
-      <ChoiceBox fx:id="emailChoice" layoutX="14.0" layoutY="73.0" prefHeight="30.0" prefWidth="237.0" />
-      <TreeView layoutX="14.0" layoutY="152.0" prefHeight="413.0" prefWidth="202.0" />
-      <ListView fx:id="emailListView" layoutX="227.0" layoutY="150.0" prefHeight="413.0" prefWidth="782.0" />
+      <Pane layoutY="35.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="545.0" prefWidth="901.0" styleClass="parent1">
+         <children>
+            <Label layoutX="473.0" layoutY="22.0" text="Список почтовых ящиков" textFill="#adadad">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Label fx:id="labelFolders" layoutX="14.0" layoutY="52.0" prefHeight="35.0" prefWidth="66.0" text="Папки" textFill="#adadad">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Button layoutX="178.0" layoutY="52.0" onAction="#handle_logout" prefHeight="30.0" prefWidth="85.0" styleClass="login-btn" text="Sign Out">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button layoutX="704.0" layoutY="52.0" onAction="#choiceEMail" prefHeight="45.0" prefWidth="127.0" styleClass="login-btn" text="Сменить аккаунт">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <Button layoutX="838.0" layoutY="52.0" onAction="#showAddEMailPanel" prefHeight="45.0" prefWidth="45.0" styleClass="login-btn" text="...">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <ChoiceBox fx:id="emailChoice" layoutX="473.0" layoutY="52.0" prefHeight="45.0" prefWidth="225.0" />
+            <TreeView layoutX="6.0" layoutY="101.0" prefHeight="427.0" prefWidth="175.0" />
+            <ListView fx:id="emailListView" layoutX="195.0" layoutY="101.0" prefHeight="427.0" prefWidth="688.0" />
+         </children>
+      </Pane>
+      <AnchorPane fx:id="pane2" layoutX="923.0" layoutY="-1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="329.0" styleClass="parent1" visible="false">
+         <children>
+            <HBox layoutX="40.0" layoutY="208.0" prefHeight="45.0" prefWidth="250.0">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="45.0">
+                     <graphic>
+                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/user.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <TextField fx:id="loginAddEmail" prefHeight="45.0" prefWidth="205.0" styleClass="txtfield" />
+               </children>
+            </HBox>
+            <HBox layoutX="40.0" layoutY="262.0" prefHeight="45.0" prefWidth="250.0">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="45.0">
+                     <graphic>
+                        <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../icons/lock.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <TextField fx:id="passwordAddEMail" prefHeight="45.0" prefWidth="205.0" styleClass="txtfield" />
+               </children>
+            </HBox>
+            <Button layoutX="40.0" layoutY="327.0" onAction="#addNewEMail" prefHeight="45.0" prefWidth="250.0" styleClass="login-btn" text="Добавить аккаунт">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+         </children>
+      </AnchorPane>
    </children>
 </AnchorPane>

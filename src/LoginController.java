@@ -167,8 +167,12 @@ public class LoginController implements Initializable {
 
                 Parent root = loader.getRoot();
                 Stage stage = new Stage();
-                stage.setScene(new Scene(root));
-                stage.initStyle(StageStyle.UNDECORATED);
+                Scene scene = new Scene(root);
+                scene.setFill(null);
+                stage.setScene(scene);
+
+                stage.initStyle(StageStyle.TRANSPARENT);
+
                 MenuController.stage = stage;
                 stage.show();
             }

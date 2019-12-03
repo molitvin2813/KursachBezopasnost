@@ -15,9 +15,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -29,9 +31,13 @@ import javafx.stage.StageStyle;
  */
 public class MenuController implements Initializable {
 
-    private ReadEmail readEmail;
 
+    public AnchorPane pane2;
 
+    @FXML
+    private TextField passwordAddEMail;
+    @FXML
+    private TextField loginAddEmail;
     @FXML
     private ListView emailListView;
     @FXML
@@ -43,16 +49,19 @@ public class MenuController implements Initializable {
     @FXML
     private HBox top;
 
+    private ReadEmail readEmail;
+
     public static Stage stage = null;
 
     private double xOffSet = 0;
     private double yOffSet = 0;
 
+    private boolean switcher =true;
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        readEmail = new ReadEmail();
-        emailListView.setItems(readEmail.readEmailFromServer());
+        //readEmail = new ReadEmail();
+        //emailListView.setItems(readEmail.readEmailFromServer());
 
         String query = "SELECT user_email.email FROM user_email " +
                 "WHERE account_table_id_account =" + LoginController.idUser+";";
@@ -118,19 +127,61 @@ public class MenuController implements Initializable {
 
     }
 
+    /**
+     * Метод для кнопки "свернуть"
+     * @param event событие мыши
+     */
     @FXML
     private void minimize_stage(MouseEvent event) {
         this.stage.setIconified(true);
     }
 
+    /**
+     * Метод для кнопки "закрыть"
+     * @param event событие мыши
+     */
     @FXML
     private void close_app(MouseEvent event) {
         Stage tmp = (Stage) parent.getScene().getWindow();
         tmp.close();
     }
 
+    /**
+     * Код для кнопки выбрать EMail
+     * @param event событие
+     */
     @FXML
     private void choiceEMail(ActionEvent event){
         labelFolders.setText(emailChoice.getValue().toString());
+    }
+
+    /**
+     * Отображает панель для добавления новой почты
+     * @param event событие
+     */
+    @FXML
+    private void showAddEMailPanel(ActionEvent event){
+        pane2.setVisible(switcher);
+        if(switcher)
+            switcher=false;
+        else
+            switcher=true;
+    }
+
+    /**
+     * Код для кнопки добавить новый EMail
+     * @param event событие
+     */
+    @FXML
+    private void addNewEMail(ActionEvent event){
+        String query = "INSERT INTO user_email (email, password_from_email,account_table_id_account)" +
+                "VALUES ('"+loginAddEmail.getText()+"', '"+passwordAddEMail.getText()+"',"+LoginController.idUser+")";
+
+        try {
+            LoginController.stmt = LoginController.con.createStatement();
+            LoginController.stmt.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

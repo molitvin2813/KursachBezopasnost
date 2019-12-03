@@ -1,5 +1,9 @@
-.parent{
+.parent1{
     -fx-background-color: #303138;
+}
+
+.main-window-menu{
+    -fx-background-color: rgba(0,0,0,0);
 }
 
 .close-btn{
