@@ -276,8 +276,7 @@ public class DES {
      * @return String возвращает уже зашифрованный текст
      */
     public String EncodeDES(){
-        String s = "Do You Know What’s Worth Fighting for\n" +
-                   "When It’s Not Worth Dying for?";
+        String s = inputData;
 
         String key = encodeKeyWord;
 
@@ -324,26 +323,9 @@ public class DES {
      * @return String расшифрованный текст
      */
     public String DecodeDES(){
-        String s = "";
+        String s = inputData;
 
         String key = StringToBinaryFormat(decodeKeyWord);
-
-        FileReader sr = null;
-        try {
-            sr = new FileReader("out1.txt");
-            int c;
-            while((c=sr.read())!=-1){
-
-              s+=(char)c;
-            }
-
-            sr.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
 
         s = StringToBinaryFormat(s);
 
