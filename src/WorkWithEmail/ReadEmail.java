@@ -69,8 +69,7 @@ public class ReadEmail
     /**
      * Метод для реализации возможности чтения писем с сервера
      */
-    public ObservableList readEmailFromServer()
-    {
+    public ObservableList readEmailFromServer() {
         ObservableList<String> messageList = FXCollections.observableArrayList();
         Properties properties = new Properties();
         properties.put("mail.debug"           , "false"  );
