@@ -6,8 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 /**
- *  Класс для реализации шифрования данных методом
- *  симметрического шиврования DES
+ *  Класс для реализации шифрования данных методом симметрического шиврования DES
  *  @author Akim
  *  @version  1.0
  */
@@ -16,10 +15,6 @@ public class DES {
      * Исходный текст, который поступает для последующего шифрования
      */
     private String inputData;
-    /**
-     * ключ для шифрования
-     */
-    private String key;
     /**
      * в DES размер блока 64 бит, но поскольку в unicode символ в два раза длинее, то увеличим блок тоже в два раза
      */
@@ -40,6 +35,14 @@ public class DES {
      * сами блоки в двоичном формате
      */
     private String[] blocksData;
+    /**
+     * ключ для шифрования данных
+     */
+    private String decodeKeyWord;
+    /**
+     * ключ для расшифрования данных
+     */
+    private String encodeKeyWord;
 
     /**
      * конструктор класса DES без параметров
@@ -47,7 +50,7 @@ public class DES {
      */
     public DES(){
         inputData = "";
-        key = "";
+        decodeKeyWord = "";
     }
 
     /**
@@ -58,8 +61,7 @@ public class DES {
      */
     public DES(String inputData,String key){
         this.inputData = StringToRightLength(inputData);
-        this.key = key;
-
+        this.decodeKeyWord = key;
     }
 
     /**
@@ -104,7 +106,7 @@ public class DES {
         int lengthOfBlock = input.length() / blocksData.length;
 
         for (int i = 0; i < blocksData.length; i++)
-            blocksData[i] = input.substring(i * lengthOfBlock, lengthOfBlock);
+            blocksData[i] = input.substring(i * lengthOfBlock, (i+1)*lengthOfBlock);
     }
 
     /**
@@ -152,7 +154,7 @@ public class DES {
      */
     private String EncodeDES_One_Round(String input, String key) {
         String L = input.substring(0, input.length() / 2);
-        String R = input.substring(input.length() / 2, input.length() / 2);
+        String R = input.substring(input.length() / 2, input.length());
 
         return (R + XOR(L, f(R, key)));
     }
@@ -165,7 +167,7 @@ public class DES {
      */
     private String DecodeDES_One_Round(String input, String key) {
         String L = input.substring(0, input.length() / 2);
-        String R = input.substring(input.length() / 2, input.length() / 2);
+        String R = input.substring(input.length() / 2, input.length());
 
         return (XOR(f(L, key), R) + L);
     }
@@ -263,7 +265,7 @@ public class DES {
             for (char c: char_binary)
                 a += Integer.parseInt(c+"") * (int)Math.pow(2, degree--);
 
-            output.append(a);
+            output.append((char)a+"");
         }
 
         return output.toString();
@@ -274,9 +276,10 @@ public class DES {
      * @return String возвращает уже зашифрованный текст
      */
     public String EncodeDES(){
-        String s = "Кот ломом колол слона";
+        String s = "Do You Know What’s Worth Fighting for\n" +
+                   "When It’s Not Worth Dying for?";
 
-        String key = "аб3ц";
+        String key = encodeKeyWord;
 
 
         s = StringToRightLength(s);
@@ -297,7 +300,7 @@ public class DES {
 
         key = KeyToPrevRound(key);
 
-        String textBoxDecodeKeyWord = StringFromBinaryToNormalFormat(key);
+        decodeKeyWord = StringFromBinaryToNormalFormat(key);
 
         String result = "";
 
@@ -323,7 +326,7 @@ public class DES {
     public String DecodeDES(){
         String s = "";
 
-        //String key = StringToBinaryFormat(textBoxDecodeKeyWord.Text);
+        String key = StringToBinaryFormat(decodeKeyWord);
 
         FileReader sr = null;
         try {
@@ -331,7 +334,7 @@ public class DES {
             int c;
             while((c=sr.read())!=-1){
 
-              s+=c;
+              s+=(char)c;
             }
 
             sr.close();
@@ -356,35 +359,16 @@ public class DES {
 
         key = KeyToNextRound(key);
 
-        //textBoxEncodeKeyWord.Text = StringFromBinaryToNormalFormat(key);
+        //encodeKeyWord = StringFromBinaryToNormalFormat(key);
 
         String result = "";
 
         for (int i = 0; i < blocksData.length; i++)
             result += blocksData[i];
 
-        FileWriter sw = null;
-        try {
-            sw = new FileWriter("out2.txt");
-            sw.write(StringFromBinaryToNormalFormat(result));
-            sw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         return StringFromBinaryToNormalFormat(result);
     }
 
-
-
-    /**
-     * геттер для ключа
-     * @see DES#key
-     * @return key
-     */
-    public String getKey() {
-        return key;
-    }
     /**
      * геттер для исходного текста
      * @see DES#inputData
@@ -392,6 +376,22 @@ public class DES {
      */
     public String getInputData() {
         return inputData;
+    }
+    /**
+     * геттер ключа для шифрования
+     * @see DES#encodeKeyWord
+     * @return String ключ для шифрования
+     */
+    public String getEncodeKeyWord() {
+        return encodeKeyWord;
+    }
+    /**
+     * геттер ключа для расшифрования
+     * @see DES#decodeKeyWord
+     * @return String ключ для расшифрования
+     */
+    public String getDecodeKeyWord() {
+        return decodeKeyWord;
     }
 
     /**
@@ -403,11 +403,19 @@ public class DES {
         this.inputData = inputData;
     }
     /**
-     * сеттер для ключа
-     * @see DES#key
-     * @param key ключ для шифрования
+     * сеттер ключа для шифрования
+     * @see DES#encodeKeyWord
+     * @param encodeKeyWord новый ключ для шифрования
      */
-    public void setKey(String key) {
-        this.key = key;
+    public void setEncodeKeyWord(String encodeKeyWord) {
+        this.encodeKeyWord = encodeKeyWord;
+    }
+    /**
+     * сеттер ключа для расшифрования
+     * @see DES#decodeKeyWord
+     * @param decodeKeyWord новый ключ для расшифрования
+     */
+    public void setDecodeKeyWord(String decodeKeyWord) {
+        this.decodeKeyWord = decodeKeyWord;
     }
 }
