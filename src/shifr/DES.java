@@ -1,7 +1,9 @@
 package shifr;
 
-import com.sun.mail.iap.ByteArray;
-import org.omg.IOP.Encoding;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  *  Класс для реализации шифрования данных методом
@@ -37,7 +39,7 @@ public class DES {
     /**
      * сами блоки в двоичном формате
      */
-    private String[] Blocks;
+    private String[] blocksData;
 
     /**
      * конструктор класса DES без параметров
@@ -65,14 +67,14 @@ public class DES {
      * @param input строка для преобразования
      */
     private void CutStringIntoBlocks(String input) {
-        Blocks = new String[(input.length() * sizeOfChar) / sizeOfBlock];
+        blocksData = new String[(input.length() * sizeOfChar) / sizeOfBlock];
 
-        int lengthOfBlock = input.length() / Blocks.length;
+        int lengthOfBlock = input.length() / blocksData.length;
 
-        for (int i = 0; i < Blocks.length; i++)
+        for (int i = 0; i < blocksData.length; i++)
         {
-            Blocks[i] = input.substring(i * lengthOfBlock, lengthOfBlock);
-            Blocks[i] = StringToBinaryFormat(Blocks[i]);
+            blocksData[i] = input.substring(i * lengthOfBlock, (i+1) * lengthOfBlock);
+            blocksData[i] = StringToBinaryFormat(blocksData[i]);
         }
     }
 
@@ -97,12 +99,12 @@ public class DES {
      * @param input входная строка в двоичном формате
      */
     private void CutBinaryStringIntoBlocks(String input) {
-        Blocks = new String[input.length() / sizeOfBlock];
+        blocksData = new String[input.length() / sizeOfBlock];
 
-        int lengthOfBlock = input.length() / Blocks.length;
+        int lengthOfBlock = input.length() / blocksData.length;
 
-        for (int i = 0; i < Blocks.length; i++)
-            Blocks[i] = input.substring(i * lengthOfBlock, lengthOfBlock);
+        for (int i = 0; i < blocksData.length; i++)
+            blocksData[i] = input.substring(i * lengthOfBlock, lengthOfBlock);
     }
 
     /**
@@ -267,8 +269,111 @@ public class DES {
         return output.toString();
     }
 
+    /**
+     * Метод, который реализует шифрование исходного текста алгоритмом DES
+     * @return String возвращает уже зашифрованный текст
+     */
+    public String EncodeDES(){
+        String s = "Кот ломом колол слона";
+
+        String key = "аб3ц";
 
 
+        s = StringToRightLength(s);
+
+        CutStringIntoBlocks(s);
+
+        key = CorrectKeyWord(key, s.length() / (2 * blocksData.length));
+        String correctKey= key;
+        key = StringToBinaryFormat(key);
+
+        for (int j = 0; j < quantityOfRounds; j++)
+        {
+            for (int i = 0; i < blocksData.length; i++)
+                blocksData[i] = EncodeDES_One_Round(blocksData[i], key);
+
+            key = KeyToNextRound(key);
+        }
+
+        key = KeyToPrevRound(key);
+
+        String textBoxDecodeKeyWord = StringFromBinaryToNormalFormat(key);
+
+        String result = "";
+
+        for (int i = 0; i < blocksData.length; i++)
+            result += blocksData[i];
+
+        FileWriter sw = null;
+        try {
+            sw = new FileWriter("out1.txt",false);
+            sw.write(StringFromBinaryToNormalFormat(result));
+            sw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return StringFromBinaryToNormalFormat(result);
+    }
+
+    /**
+     * Метод, реализующий расшифрование текста
+     * @return String расшифрованный текст
+     */
+    public String DecodeDES(){
+        String s = "";
+
+        //String key = StringToBinaryFormat(textBoxDecodeKeyWord.Text);
+
+        FileReader sr = null;
+        try {
+            sr = new FileReader("out1.txt");
+            int c;
+            while((c=sr.read())!=-1){
+
+              s+=c;
+            }
+
+            sr.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
+        s = StringToBinaryFormat(s);
+
+        CutBinaryStringIntoBlocks(s);
+
+        for (int j = 0; j < quantityOfRounds; j++)
+        {
+            for (int i = 0; i < blocksData.length; i++)
+                blocksData[i] = DecodeDES_One_Round(blocksData[i], key);
+
+            key = KeyToPrevRound(key);
+        }
+
+        key = KeyToNextRound(key);
+
+        //textBoxEncodeKeyWord.Text = StringFromBinaryToNormalFormat(key);
+
+        String result = "";
+
+        for (int i = 0; i < blocksData.length; i++)
+            result += blocksData[i];
+
+        FileWriter sw = null;
+        try {
+            sw = new FileWriter("out2.txt");
+            sw.write(StringFromBinaryToNormalFormat(result));
+            sw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return StringFromBinaryToNormalFormat(result);
+    }
 
 
 

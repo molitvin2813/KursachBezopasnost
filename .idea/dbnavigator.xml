@@ -25,7 +25,7 @@
     <show-object-properties value="true" />
     <loaded-nodes>
       <connection connection-id="513763f2-806c-4db6-bcd8-86e09dd79075">
-        <schema name="my_mail_client" object-types="view, table" />
+        <schema name="my_mail_client" object-types="table, view" />
       </connection>
     </loaded-nodes>
   </component>
