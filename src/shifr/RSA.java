@@ -2,6 +2,7 @@ package shifr;
 
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -50,7 +51,7 @@ public class RSA {
      * @return
      */
     private List<String> RSAEncode(String s, long e, long n) {
-        List<String> result = null;
+        List<String> result = new ArrayList<>();
         BigInteger bi;
 
         for (int i = 0; i < s.length(); i++)
@@ -91,5 +92,33 @@ public class RSA {
         //если не нашли, то возвращаем -1
         return -1;
     }
-    
+
+    /**
+     * Метод, реализующий расшифрования данных по аллгоритму RSA
+     * @param input зашифрованные данные
+     * @param d ключ d
+     * @param n ключ n
+     * @return расшифрованный текст
+     */
+    private String RSA_Decode(List<String> input, long d, long n) {
+        String result = "";
+
+        BigInteger bi;
+
+        for (String item : input)
+        {
+            bi = new BigInteger(item);
+            bi = bi.pow((int)d);
+
+            BigInteger N = new BigInteger(Long.toString(n));
+
+            bi = bi.mod(N);
+
+            int index = Integer.parseInt(bi.toString());
+
+            result += characters[index];
+        }
+
+        return result;
+    }
 }
