@@ -1,9 +1,14 @@
 package shifr;
 
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Класс, реализующий шифрование данных ассиметричным методом RSA
@@ -21,8 +26,36 @@ public class RSA {
             'Э', 'Ю', 'Я', ' ', '1', '2', '3', '4', '5', '6', '7',
             '8', '9', '0' };
 
+    /**
+     * простое число p, необходимое для последующего шифрования
+     */
+    long p;
+    /**
+     * простое число q, необходимое для последующего шифрования
+     */
+    long q;
+    /**
+     * секретный ключ параметр d
+     */
+    long d;
+    /**
+     * секретный ключ параметр n
+     */
+    long n;
+    /**
+     * исходные данные для шифрования
+     */
+    String inputData;
 
-    public RSA(){}
+    List<String> inputDataForDecode = new ArrayList<>();
+
+    public RSA(){
+        inputData ="";
+        p=0;
+        q=0;
+        d=0;
+        n=0;
+    }
 
     /**
      * Метод, который проверяет является ли число простым
@@ -100,7 +133,7 @@ public class RSA {
      * @param n ключ n
      * @return расшифрованный текст
      */
-    private String RSA_Decode(List<String> input, long d, long n) {
+    private String RSADecode(List<String> input, long d, long n) {
         String result = "";
 
         BigInteger bi;
@@ -120,5 +153,103 @@ public class RSA {
         }
 
         return result;
+    }
+
+    /**
+     * Вычисление параметра d (d должно быть взаимно простым с m)
+     * @param m параметр m
+     * @return long возвращает d
+     */
+    private long calculateD(long m) {
+        long d = m - 1;
+
+        for (long i = 2; i <= m; i++)
+            if ((m % i == 0) && (d % i == 0)) //если имеют общие делители
+            {
+                d--;
+                i = 1;
+            }
+
+        return d;
+    }
+
+    /**
+     * Метод, вычисляющий значение параметра e
+     * @param d ключ d
+     * @param m параметр m
+     * @return long e
+     */
+    private long calculateE(long d, long m) {
+        long e = 10;
+
+        while (true)
+        {
+            if ((e * d) % m == 1)
+                break;
+            else
+                e++;
+        }
+
+        return e;
+    }
+
+    /**
+     * Шифрование данных
+     */
+    public List<String> RSAEncode() {
+
+        if (isTheNumberSimple(p) && isTheNumberSimple(q)) {
+            String s = inputData;
+            s = s.toUpperCase();
+
+            long n = p * q;
+            long m = (p - 1) * (q - 1);
+            long d = calculateD(m);
+            long e_ = calculateE(d, m);
+
+            this.d = d;
+            this.n = n;
+            return RSAEncode(s, e_, n);
+        }
+        return null;
+    }
+
+    /**
+     * Расшифрование данных
+     */
+    public String RSADecode(){
+        return RSADecode(inputDataForDecode, d, n);
+    }
+
+    public long getD() {
+        return d;
+    }
+    public long getN() {
+        return n;
+    }
+    public long getP() {
+        return p;
+    }
+    public long getQ() {
+        return q;
+    }
+    public String getInputData() {
+        return inputData;
+    }
+
+    public void setD(long d) {
+        this.d = d;
+    }
+    public void setN(long n) {
+        this.n = n;
+    }
+    public void setP(long p) {
+        this.p = p;
+    }
+    public void setQ(long q) {
+        this.q = q;
+    }
+    public void setInputData(String inputData) {
+        this.inputData = inputData;
     }
 }
