@@ -240,7 +240,32 @@ public class DES {
 
         return key;
     }
-    
+
+    /**
+     * Метод, которые преобразует двоичный код в текст
+     * @param input строка в двоичном формате
+     * @return String возвращает строку в нормальном формате
+     */
+    private String StringFromBinaryToNormalFormat(String input) {
+        StringBuilder output = new StringBuilder();
+        StringBuilder inputBuilder = new StringBuilder(input);
+        while (inputBuilder.length() > 0)
+        {
+            char[] char_binary = inputBuilder.substring(0, sizeOfChar).toCharArray();
+            inputBuilder.delete(0, sizeOfChar);
+
+            int a = 0;
+            int degree = char_binary.length- 1;
+
+
+            for (char c: char_binary)
+                a += Integer.parseInt(c+"") * (int)Math.pow(2, degree--);
+
+            output.append(a);
+        }
+
+        return output.toString();
+    }
 
 
 
