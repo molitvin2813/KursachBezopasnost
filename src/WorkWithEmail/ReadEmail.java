@@ -69,7 +69,7 @@ public class ReadEmail
     /**
      * Метод для реализации возможности чтения писем с сервера
      */
-    public ObservableList readEmailFromServer() {
+    public ObservableList<String> readEmailFromServer() {
         ObservableList<String> messageList = FXCollections.observableArrayList();
         Properties properties = new Properties();
         properties.put("mail.debug"           , "false"  );
@@ -106,19 +106,70 @@ public class ReadEmail
             if (inbox.getMessageCount() == 0)
                 return null;
             // Последнее сообщение; первое сообщение под номером 1
-            Message message = inbox.getMessage(inbox.getMessageCount());
-            Multipart mp = (Multipart) message.getContent();
-            // Вывод содержимого в консоль
-            for (int i = 0; i < mp.getCount(); i++){
-                BodyPart  bp = mp.getBodyPart(i);
-                if (bp.getFileName() == null)
-                    System.out.println("    " + i + ". сообщение : '" + bp.getContent() + "'");
-                    //messageList.add(bp.getContent()+"");
-                else
-                    System.out.println("    " + i + ". файл : '" + bp.getFileName() + "'");
-                    //messageList.add(bp.getFileName() + "");
+            Message[] message = inbox.getMessages();
+            for(int i =0; i<inbox.getMessageCount();i++){
+
+                messageList.add(message[i].getSubject());
             }
+
         } catch (NoSuchProviderException e) {
+            e.printStackTrace();
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+        return messageList;
+    }
+
+    public ObservableList<String> getBodyMessage(){
+        ObservableList<String> messageList = FXCollections.observableArrayList();
+        Properties properties = new Properties();
+        properties.put("mail.debug"           , "false"  );
+        properties.put("mail.store.protocol"  , "imap"  );
+
+        MailSSLSocketFactory sf = null;
+        try {
+            sf = new MailSSLSocketFactory();
+        } catch (GeneralSecurityException e) {
+            e.printStackTrace();
+        }
+        sf.setTrustAllHosts(true);
+        properties.put("mail.imap.starttls.enable", "true");
+        properties.put("mail.imap.ssl.socketFactory", sf);
+        properties.put("mail.imaps.port"       , IMAP_Port);
+
+        Authenticator auth = new EmailAuthenticator(IMAP_AUTH_EMAIL, IMAP_AUTH_PWD);
+        Session session = Session.getDefaultInstance(properties, auth);
+        session.setDebug(false);
+
+        try {
+            Store store = session.getStore();
+
+            // Подключение к почтовому серверу
+            store.connect(IMAP_Server, IMAP_AUTH_EMAIL, IMAP_AUTH_PWD);
+
+
+            Folder inbox = store.getFolder("INBOX");
+
+            // Открываем папку в режиме только для чтения
+            inbox.open(Folder.READ_ONLY);
+
+            //System.out.println("Количество сообщений : " + String.valueOf(inbox.getMessageCount()));
+            if (inbox.getMessageCount() == 0)
+                return null;
+            // Последнее сообщение; первое сообщение под номером 1
+            Message[] message = inbox.getMessages();
+
+            Multipart mp = (Multipart) message[0].getContent();
+            for (int i = 0; i < mp.getCount(); i++) {
+                BodyPart bp = mp.getBodyPart(i);
+                if (bp.getFileName() == null)
+                    //System.out.println("    " + i + ". сообщение : '" + bp.getContent() + "'");
+                    messageList.add(bp.getContent() + "");
+                else
+                    //System.out.println("    " + i + ". файл : '" + bp.getFileName() + "'");
+                    messageList.add(bp.getFileName() + "");
+            }
+        }catch (NoSuchProviderException e) {
             e.printStackTrace();
         } catch (MessagingException e) {
             e.printStackTrace();
@@ -126,5 +177,6 @@ public class ReadEmail
             e.printStackTrace();
         }
         return messageList;
+
     }
 }

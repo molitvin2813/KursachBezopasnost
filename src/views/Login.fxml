@@ -8,6 +8,42 @@
 
 <AnchorPane id="AnchorPane" fx:id="parent" prefHeight="580.0" prefWidth="878.0" styleClass="parent1" stylesheets="@../css/Stylesheet.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="LoginController">
    <children>
+      <HBox fx:id="top" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="959.0">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+         <children>
+            <HBox HBox.hgrow="ALWAYS">
+               <children>
+                  <Label fx:id="topLabel" text="Вход" textFill="#c2c2c2">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#minimize_stage" prefHeight="30.0" prefWidth="30.0" styleClass="min-btn">
+               <graphic>
+                  <ImageView fitHeight="16.0" fitWidth="16.0" onMouseClicked="#minimize_stage" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/minimize%20(1).png" />
+                     </image>
+                  </ImageView>
+               </graphic></Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="999.0" layoutY="13.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#close_app" prefHeight="30.0" prefWidth="30.0" styleClass="close-btn">
+               <graphic>
+                  <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/close-button%20(1).png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Label>
+         </children>
+      </HBox>
       <Pane fx:id="content" layoutY="35.0" prefHeight="545.0" prefWidth="959.0">
          <children>
             <HBox alignment="CENTER_LEFT" layoutX="592.0" layoutY="194.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="250.0">
@@ -95,41 +131,5 @@
             </Button>
          </children>
       </Pane>
-      <HBox fx:id="top" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="959.0">
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </padding>
-         <children>
-            <HBox HBox.hgrow="ALWAYS">
-               <children>
-                  <Label fx:id="topLabel" text="Вход" textFill="#c2c2c2">
-                     <font>
-                        <Font size="15.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets left="10.0" />
-                     </HBox.margin>
-                  </Label>
-               </children>
-            </HBox>
-            <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#minimize_stage" prefHeight="30.0" prefWidth="30.0" styleClass="min-btn">
-               <graphic>
-                  <ImageView fitHeight="16.0" fitWidth="16.0" onMouseClicked="#minimize_stage" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../icons/minimize%20(1).png" />
-                     </image>
-                  </ImageView>
-               </graphic></Label>
-            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="999.0" layoutY="13.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#close_app" prefHeight="30.0" prefWidth="30.0" styleClass="close-btn">
-               <graphic>
-                  <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@../icons/close-button%20(1).png" />
-                     </image>
-                  </ImageView>
-               </graphic>
-            </Label>
-         </children>
-      </HBox>
    </children>
 </AnchorPane>

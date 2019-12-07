@@ -1,10 +1,8 @@
-import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
 
-import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,9 +19,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import shifr.DES;
 
-import java.sql.Connection;
 import java.sql.DriverManager;
 
 /**
@@ -160,7 +156,7 @@ public class LoginController implements Initializable {
                 tmp.close();
 
                 FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource("/views/Menu.fxml"));
+                loader.setLocation(getClass().getResource("/views/MainWindow.fxml"));
                 try {
                     loader.load();
                 }catch (IOException e){
@@ -175,7 +171,7 @@ public class LoginController implements Initializable {
 
                 stage.initStyle(StageStyle.TRANSPARENT);
 
-                MenuController.stage = stage;
+                MainWindowController.stage = stage;
                 stage.show();
             }
         } catch (SQLException e) {

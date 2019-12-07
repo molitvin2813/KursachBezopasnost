@@ -24,11 +24,11 @@ import javafx.stage.StageStyle;
 
 
 /**
- * Класс, который является обработчиком формы Menu.fxml
+ * Класс, который является обработчиком формы MainWindow.fxml
  * @author Akim
  * @version  1.0
  */
-public class MenuController implements Initializable {
+public class MainWindowController implements Initializable {
 
     @FXML
     private AnchorPane paneForDeleteMail;
@@ -67,6 +67,8 @@ public class MenuController implements Initializable {
 
         emailChoice.setItems(updateDataChoiceBox());
         emailChoiceForDelete.setItems(updateDataChoiceBox());
+        ReadEmail readEmail = new ReadEmail();
+        emailListView.setItems(readEmail.readEmailFromServer());
         makeStageDragable();
     }
 

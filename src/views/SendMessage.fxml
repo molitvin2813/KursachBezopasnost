@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.web.*?>
+
+<AnchorPane prefHeight="580.0" prefWidth="959.0" styleClass="main-window-menu" stylesheets="@../css/Stylesheet.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SendMessage">
+   <children>
+      <HBox fx:id="top" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="959.0" styleClass="parent1">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+         <children>
+            <HBox styleClass="parent1" HBox.hgrow="ALWAYS">
+               <children>
+                  <Label fx:id="topLabel" text="Отправка сообщения" textFill="#c2c2c2">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+            <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#minimize_stage" prefHeight="30.0" prefWidth="30.0" styleClass="min-btn">
+               <graphic>
+                  <ImageView fitHeight="16.0" fitWidth="16.0" onMouseClicked="#minimize_stage" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/minimize%20(1).png" />
+                     </image>
+                  </ImageView>
+               </graphic></Label>
+            <Label alignment="CENTER" contentDisplay="CENTER" layoutX="999.0" layoutY="13.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#close_app" prefHeight="30.0" prefWidth="30.0" styleClass="close-btn">
+               <graphic>
+                  <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/close-button%20(1).png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+            </Label>
+         </children>
+      </HBox>
+      <Pane layoutY="35.0" prefHeight="545.0" prefWidth="959.0" styleClass="parent1">
+         <children>
+            <HTMLEditor htmlText="&lt;html&gt;&lt;head&gt;&lt;/head&gt;&lt;body contenteditable=&quot;true&quot;&gt;&lt;/body&gt;&lt;/html&gt;" layoutX="224.0" layoutY="76.0" prefHeight="410.0" prefWidth="718.0" />
+            <TextField layoutX="224.0" layoutY="12.0" prefHeight="25.0" prefWidth="718.0" styleClass="txtfield" />
+            <TextField layoutX="224.0" layoutY="44.0" prefHeight="25.0" prefWidth="718.0" styleClass="txtfield" />
+            <Label fx:id="topLabel1" layoutX="63.0" layoutY="14.0" prefHeight="21.0" prefWidth="149.0" text="Получатель" textFill="#c2c2c2">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label fx:id="topLabel11" layoutX="63.0" layoutY="46.0" text="Тема Сообщения" textFill="#c2c2c2">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Button layoutX="692.0" layoutY="493.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="250.0" styleClass="login-btn" text="Отправить сообщение">
+               <font>
+                  <Font name="Microsoft Sans Serif" size="15.0" />
+               </font></Button>
+            <Button layoutX="507.0" layoutY="493.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="173.0" styleClass="login-btn" text="Прикрепить файл">
+               <font>
+                  <Font name="Microsoft Sans Serif" size="15.0" />
+               </font>
+            </Button>
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>
