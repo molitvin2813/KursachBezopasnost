@@ -75,9 +75,9 @@
             <ListView fx:id="emailListView" layoutX="195.0" layoutY="101.0" prefHeight="427.0" prefWidth="688.0" />
          </children>
       </Pane>
-      <AnchorPane fx:id="pane2" layoutX="923.0" layoutY="-1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="329.0" styleClass="parent1" visible="false">
+      <AnchorPane fx:id="pane2" layoutX="923.0" layoutY="-1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="329.0" styleClass="parent1">
          <children>
-            <HBox layoutX="40.0" layoutY="208.0" prefHeight="45.0" prefWidth="250.0">
+            <HBox layoutX="48.0" layoutY="53.0" prefHeight="45.0" prefWidth="250.0">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="45.0">
                      <graphic>
@@ -91,7 +91,7 @@
                   <TextField fx:id="loginAddEmail" prefHeight="45.0" prefWidth="205.0" styleClass="txtfield" />
                </children>
             </HBox>
-            <HBox layoutX="40.0" layoutY="262.0" prefHeight="45.0" prefWidth="250.0">
+            <HBox layoutX="48.0" layoutY="107.0" prefHeight="45.0" prefWidth="250.0">
                <children>
                   <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="45.0" prefWidth="45.0">
                      <graphic>
@@ -105,12 +105,21 @@
                   <TextField fx:id="passwordAddEMail" prefHeight="45.0" prefWidth="205.0" styleClass="txtfield" />
                </children>
             </HBox>
-            <Button layoutX="40.0" layoutY="327.0" onAction="#addNewEMail" prefHeight="45.0" prefWidth="250.0" styleClass="login-btn" text="Добавить аккаунт">
+            <Button layoutX="48.0" layoutY="172.0" onAction="#addNewEMail" prefHeight="45.0" prefWidth="250.0" styleClass="login-btn" text="Добавить аккаунт">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
          </children>
       </AnchorPane>
+      <AnchorPane layoutX="923.0" layoutY="300.0" prefHeight="280.0" prefWidth="329.0" styleClass="parent1">
+         <children>
+            <Button layoutX="52.0" layoutY="118.0" onAction="#choiceEMailForDelete" prefHeight="45.0" prefWidth="225.0" styleClass="login-btn" text="Сменить аккаунт">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
+            <ChoiceBox fx:id="emailChoiceForDelete" layoutX="52.0" layoutY="46.0" prefHeight="45.0" prefWidth="225.0" />
+         </children></AnchorPane>
    </children>
 </AnchorPane>

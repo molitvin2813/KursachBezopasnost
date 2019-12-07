@@ -19,10 +19,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import shifr.DES;
 
 
 /**
@@ -32,9 +30,12 @@ import shifr.DES;
  */
 public class MenuController implements Initializable {
 
-
-    public AnchorPane pane2;
-
+    @FXML
+    private AnchorPane paneForDeleteMail;
+    @FXML
+    private AnchorPane paneForAddNewMail;
+    @FXML
+    private ChoiceBox emailChoiceForDelete;
     @FXML
     private TextField passwordAddEMail;
     @FXML
@@ -64,6 +65,17 @@ public class MenuController implements Initializable {
         //readEmail = new ReadEmail();
         //emailListView.setItems(readEmail.readEmailFromServer());
 
+        emailChoice.setItems(updateDataChoiceBox());
+        emailChoiceForDelete.setItems(updateDataChoiceBox());
+        makeStageDragable();
+    }
+
+    /**
+     * Вспомогательный метод, который выполняет запрос на получение email адресов,
+     * а после формирует из них список, который необходим для ChoiceBox
+     * @return ObservableList<String> список адресов
+     */
+    private ObservableList<String> updateDataChoiceBox(){
         String query = "SELECT user_email.email FROM user_email " +
                 "WHERE account_table_id_account =" + LoginController.idUser+";";
 
@@ -72,13 +84,14 @@ public class MenuController implements Initializable {
             LoginController.rs = LoginController.stmt.executeQuery(query);
             while(LoginController.rs.next()){
                 emailList.add(LoginController.rs.getString("email"));
-            }
-            emailChoice.setItems(emailList);
 
+            }
+
+            return emailList;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        makeStageDragable();
+        return null;
     }
 
     private void makeStageDragable() {
@@ -162,7 +175,8 @@ public class MenuController implements Initializable {
      */
     @FXML
     private void showAddEMailPanel(ActionEvent event){
-        pane2.setVisible(switcher);
+        paneForAddNewMail.setVisible(switcher);
+        paneForDeleteMail.setVisible(switcher);
         if(switcher)
             switcher=false;
         else
@@ -184,5 +198,23 @@ public class MenuController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Код для кнопки, котрая реализует возможность удаления почты
+     * с аккаунта пользователя почтового клиента
+     * @param actionEvent событие
+     */
+    public void choiceEMailForDelete(ActionEvent actionEvent) {
+        String query ="DELETE FROM user_email WHERE email = '"+ emailChoiceForDelete.getValue() + "';";
+
+        try {
+            LoginController.stmt = LoginController.con.createStatement();
+            LoginController.stmt.executeUpdate(query);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        emailChoice.setItems(updateDataChoiceBox());
+        emailChoiceForDelete.setItems(updateDataChoiceBox());
     }
 }
