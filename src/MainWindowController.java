@@ -45,9 +45,9 @@ public class MainWindowController implements Initializable {
     @FXML
     private ListView emailListView;
     @FXML
-    public ChoiceBox emailChoice;
+    private ChoiceBox emailChoice;
     @FXML
-    public Label labelFolders;
+    private Label labelFolders;
     @FXML
     private AnchorPane parent;
     @FXML
@@ -117,12 +117,7 @@ public class MainWindowController implements Initializable {
     }
 
     @FXML
-    private void handle_logout(ActionEvent event) throws IOException {
-        /*
-        Parent menu = FXMLLoader.load(getClass().getResource("/views/Login.fxml"));
-        content.getChildren().removeAll();
-        content.getChildren().setAll(menu);
-         */
+    private void handle_logout(MouseEvent event) throws IOException {
 
         Stage tmp = (Stage) parent.getScene().getWindow();
         tmp.close();
@@ -252,5 +247,29 @@ public class MainWindowController implements Initializable {
         }
         emailChoice.setItems(updateDataChoiceBox());
         emailChoiceForDelete.setItems(updateDataChoiceBox());
+    }
+
+    public void sendMessage(ActionEvent actionEvent) {
+        Stage tmp = (Stage) parent.getScene().getWindow();
+        tmp.close();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/views/SendMessage.fxml"));
+        try {
+            loader.load();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+        Parent root = loader.getRoot();
+        Stage stage = new Stage();
+        Scene scene = new Scene(root);
+        scene.setFill(null);
+        stage.setScene(scene);
+
+        stage.initStyle(StageStyle.TRANSPARENT);
+
+        SendMessage.stage = stage;
+        stage.show();
     }
 }

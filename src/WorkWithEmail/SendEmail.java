@@ -1,9 +1,12 @@
 package WorkWithEmail;
 
+import com.sun.mail.util.MailSSLSocketFactory;
+
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.mail.*;
 import javax.mail.internet.*;
+import java.security.GeneralSecurityException;
 import java.util.Properties;
 
 /**
@@ -25,11 +28,19 @@ public class SendEmail
     public SendEmail(final String emailTo, final String thema)
     {
         Properties properties = new Properties();
+        MailSSLSocketFactory sf = null;
+        try {
+            sf = new MailSSLSocketFactory();
+        } catch (GeneralSecurityException e) {
+            e.printStackTrace();
+        }
+        sf.setTrustAllHosts(true);
+
         properties.put("mail.smtp.host"               , SMTP_SERVER                     );
         properties.put("mail.smtp.port"               , SMTP_Port                       );
         properties.put("mail.smtp.auth"               , "true"                          );
-        properties.put("mail.smtp.ssl.enable"         , "true"                          );
-        properties.put("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+        properties.put("mail.smtp.starttls.enable"    , "true"                          );
+        properties.put("mail.smtp.socketFactory", sf);
 
         try {
             Authenticator auth = new EmailAuthenticator(SMTP_AUTH_USER, SMTP_AUTH_PWD);
@@ -45,6 +56,7 @@ public class SendEmail
             message.setFrom(email_from);
             message.setRecipient(Message.RecipientType.TO, email_to);
             message.setSubject(thema);
+
             if (reply_to != null)
                 message.setReplyTo (new Address[] {reply_to});
         } catch (AddressException e) {
@@ -67,7 +79,7 @@ public class SendEmail
             Multipart mmp = new MimeMultipart();
             // Текст сообщения
             MimeBodyPart bodyPart = new MimeBodyPart();
-            bodyPart.setContent(text, "text/plain; charset=utf-8");
+            bodyPart.setContent(text, "text/html; charset=utf-8");
             mmp.addBodyPart(bodyPart);
             // Вложение файла в сообщение
             if (FILE_PATH != null) {

@@ -13,6 +13,18 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
          <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handle_logout" prefHeight="30.0" prefWidth="30.0" styleClass="min-btn">
+               <graphic>
+                  <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/back-arrow.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
+               <HBox.margin>
+                  <Insets bottom="4.0" />
+               </HBox.margin>
+            </Label>
             <HBox HBox.hgrow="ALWAYS">
                <children>
                   <Label text="Основное Окно Программы" textFill="#c2c2c2">
@@ -45,7 +57,7 @@
       </HBox>
       <Pane layoutY="35.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="545.0" prefWidth="901.0" styleClass="parent1">
          <children>
-            <Label layoutX="473.0" layoutY="22.0" text="Список почтовых ящиков" textFill="#adadad">
+            <Label layoutX="440.0" layoutY="22.0" text="Список почтовых ящиков" textFill="#adadad">
                <font>
                   <Font size="20.0" />
                </font>
@@ -55,11 +67,6 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Button layoutX="178.0" layoutY="52.0" onAction="#handle_logout" prefHeight="30.0" prefWidth="85.0" styleClass="login-btn" text="Sign Out">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Button>
             <Button layoutX="681.0" layoutY="52.0" onAction="#choiceEMail" prefHeight="45.0" prefWidth="150.0" styleClass="login-btn" text="Сменить аккаунт">
                <font>
                   <Font size="14.0" />
@@ -70,9 +77,14 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <ChoiceBox fx:id="emailChoice" layoutX="451.0" layoutY="52.0" prefHeight="45.0" prefWidth="225.0" />
-            <TreeView layoutX="6.0" layoutY="101.0" prefHeight="427.0" prefWidth="175.0" />
-            <ListView fx:id="emailListView" layoutX="195.0" layoutY="101.0" prefHeight="427.0" prefWidth="688.0" />
+            <ChoiceBox fx:id="emailChoice" layoutX="440.0" layoutY="52.0" prefHeight="45.0" prefWidth="236.0" />
+            <TreeView layoutX="16.0" layoutY="101.0" prefHeight="388.0" prefWidth="196.0" />
+            <ListView fx:id="emailListView" layoutX="233.0" layoutY="101.0" prefHeight="388.0" prefWidth="650.0" />
+            <Button layoutX="687.0" layoutY="499.0" onAction="#sendMessage" prefHeight="35.0" prefWidth="196.0" styleClass="login-btn" text="Написать сообщение">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
       <AnchorPane fx:id="paneForAddNewMail" layoutX="923.0" layoutY="-1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="329.0" styleClass="parent1" visible="false">
@@ -114,7 +126,7 @@
       </AnchorPane>
       <AnchorPane fx:id="paneForDeleteMail" layoutX="923.0" layoutY="300.0" prefHeight="280.0" prefWidth="329.0" styleClass="parent1" visible="false">
          <children>
-            <Button layoutX="52.0" layoutY="118.0" onAction="#choiceEMailForDelete" prefHeight="45.0" prefWidth="225.0" styleClass="login-btn" text="Сменить аккаунт">
+            <Button layoutX="52.0" layoutY="118.0" onAction="#choiceEMailForDelete" prefHeight="45.0" prefWidth="225.0" styleClass="login-btn" text="Удалить аккаунт">
                <font>
                   <Font size="14.0" />
                </font>
