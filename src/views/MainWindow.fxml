@@ -60,7 +60,7 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button layoutX="704.0" layoutY="52.0" onAction="#choiceEMail" prefHeight="45.0" prefWidth="127.0" styleClass="login-btn" text="Сменить аккаунт">
+            <Button layoutX="681.0" layoutY="52.0" onAction="#choiceEMail" prefHeight="45.0" prefWidth="150.0" styleClass="login-btn" text="Сменить аккаунт">
                <font>
                   <Font size="14.0" />
                </font>
@@ -70,7 +70,7 @@
                   <Font size="14.0" />
                </font>
             </Button>
-            <ChoiceBox fx:id="emailChoice" layoutX="473.0" layoutY="52.0" prefHeight="45.0" prefWidth="225.0" />
+            <ChoiceBox fx:id="emailChoice" layoutX="451.0" layoutY="52.0" prefHeight="45.0" prefWidth="225.0" />
             <TreeView layoutX="6.0" layoutY="101.0" prefHeight="427.0" prefWidth="175.0" />
             <ListView fx:id="emailListView" layoutX="195.0" layoutY="101.0" prefHeight="427.0" prefWidth="688.0" />
          </children>

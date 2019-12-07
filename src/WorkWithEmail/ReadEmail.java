@@ -63,9 +63,7 @@ public class ReadEmail
         IMAP_Port       = "993";
     }
 
-    public String getIMAP_AUTH_EMAIL(){
-        return IMAP_AUTH_EMAIL;
-    }
+
     /**
      * Метод для реализации возможности чтения писем с сервера
      */
@@ -178,5 +176,33 @@ public class ReadEmail
         }
         return messageList;
 
+    }
+
+
+    public String getIMAP_AUTH_EMAIL(){
+        return IMAP_AUTH_EMAIL;
+    }
+    public String getIMAP_AUTH_PWD() {
+        return IMAP_AUTH_PWD;
+    }
+    public String getIMAP_Port() {
+        return IMAP_Port;
+    }
+    public String getIMAP_Server() {
+        return IMAP_Server;
+    }
+
+
+    public void setIMAP_AUTH_EMAIL(String IMAP_AUTH_EMAIL) {
+        this.IMAP_AUTH_EMAIL = IMAP_AUTH_EMAIL;
+    }
+    public void setIMAP_AUTH_PWD(String IMAP_AUTH_PWD) {
+        this.IMAP_AUTH_PWD = IMAP_AUTH_PWD;
+    }
+    public void setIMAP_Port(String IMAP_Port) {
+        this.IMAP_Port = IMAP_Port;
+    }
+    public void setIMAP_Server(String IMAP_Server) {
+        this.IMAP_Server = IMAP_Server;
     }
 }

@@ -22,6 +22,8 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import javax.swing.*;
+
 
 /**
  * Класс, который является обработчиком формы MainWindow.fxml
@@ -67,8 +69,8 @@ public class MainWindowController implements Initializable {
 
         emailChoice.setItems(updateDataChoiceBox());
         emailChoiceForDelete.setItems(updateDataChoiceBox());
-        ReadEmail readEmail = new ReadEmail();
-        emailListView.setItems(readEmail.readEmailFromServer());
+        readEmail = new ReadEmail();
+
         makeStageDragable();
     }
 
@@ -168,7 +170,33 @@ public class MainWindowController implements Initializable {
      */
     @FXML
     private void choiceEMail(ActionEvent event){
-        labelFolders.setText(emailChoice.getValue().toString());
+        String query = "SELECT * FROM user_email WHERE email = '" + emailChoice.getValue().toString() +"';";
+        String password ="";
+
+        try {
+            LoginController.rs = LoginController.stmt.executeQuery(query);
+            LoginController.rs.next();
+            password= (LoginController.rs.getString("password_from_email"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        readEmail.setIMAP_AUTH_EMAIL(emailChoice.getValue().toString());
+        readEmail.setIMAP_AUTH_PWD(password);
+        readEmail.setIMAP_Port("993");
+        readEmail.setIMAP_Server(getIMAPServer(readEmail.getIMAP_AUTH_EMAIL()));
+
+        emailListView.setItems(readEmail.readEmailFromServer());
+    }
+
+    /**
+     * Вспомогательная функция для получения сервера IMAP
+     * @param mail почта пользователя, которую он выбрал
+     * @return адрес сервера IMAP
+     */
+    private String getIMAPServer(String mail){
+        String[] array = mail.split("@");
+        return "imap."+array[1];
     }
 
     /**
@@ -184,7 +212,7 @@ public class MainWindowController implements Initializable {
         else
             switcher=true;
     }
-
+    JFrame frame = new JFrame("JOptionPane showMessageDialog example");
     /**
      * Код для кнопки добавить новый EMail
      * @param event событие
@@ -197,7 +225,11 @@ public class MainWindowController implements Initializable {
         try {
             LoginController.stmt = LoginController.con.createStatement();
             LoginController.stmt.executeUpdate(query);
+            passwordAddEMail.setText("");
+            loginAddEmail.setText("");
+            JOptionPane.showMessageDialog(frame, "Аккаунт успешно добавлен");
         } catch (SQLException e) {
+            JOptionPane.showMessageDialog(frame, "Не удалось добавить аккаунт");
             e.printStackTrace();
         }
     }
@@ -213,7 +245,9 @@ public class MainWindowController implements Initializable {
         try {
             LoginController.stmt = LoginController.con.createStatement();
             LoginController.stmt.executeUpdate(query);
+            JOptionPane.showMessageDialog(frame, "Аккаунт успешно удален");
         } catch (SQLException e) {
+            JOptionPane.showMessageDialog(frame, "Не удалось удалить аккаунт ");
             e.printStackTrace();
         }
         emailChoice.setItems(updateDataChoiceBox());
