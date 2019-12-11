@@ -16,6 +16,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.web.HTMLEditor;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import shifr.DES;
 
 import javax.swing.*;
 import java.awt.*;

@@ -23,6 +23,7 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import shifr.DES;
 
 import javax.swing.*;
 

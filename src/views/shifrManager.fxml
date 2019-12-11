@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="parent" prefHeight="520.0" prefWidth="959.0" styleClass="main-window-menu" stylesheets="@../css/Stylesheet.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ShifrManager">
+    <children>
+        <HBox fx:id="top" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="585.0" styleClass="parent1">
+            <padding>
+                <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+            </padding>
+            <children>
+                <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#handle_logout" prefHeight="30.0" prefWidth="30.0" styleClass="min-btn">
+                    <graphic>
+                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../icons/back-arrow.png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                    <HBox.margin>
+                        <Insets bottom="4.0" />
+                    </HBox.margin>
+                </Label>
+            </children>
+            <children>
+                <HBox styleClass="parent1" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label fx:id="topLabel" text="Менеджер криптографии" textFill="#c2c2c2">
+                            <font>
+                                <Font size="15.0" />
+                            </font>
+                            <HBox.margin>
+                                <Insets left="10.0" />
+                            </HBox.margin>
+                        </Label>
+                    </children>
+                </HBox>
+                <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#minimize_stage" prefHeight="30.0" prefWidth="30.0" styleClass="min-btn">
+                    <graphic>
+                        <ImageView fitHeight="16.0" fitWidth="16.0" onMouseClicked="#minimize_stage" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../icons/minimize%20(1).png" />
+                            </image>
+                        </ImageView>
+                    </graphic></Label>
+                <Label alignment="CENTER" contentDisplay="CENTER" layoutX="999.0" layoutY="13.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#close_app" prefHeight="30.0" prefWidth="30.0" styleClass="close-btn">
+                    <graphic>
+                        <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                                <Image url="@../icons/close-button%20(1).png" />
+                            </image>
+                        </ImageView>
+                    </graphic>
+                </Label>
+            </children>
+        </HBox>
+      <Pane layoutY="47.0" prefHeight="226.0" prefWidth="585.0" styleClass="parent1">
+         <children>
+            <Label fx:id="topLabel1" layoutX="16.0" layoutY="28.0" prefHeight="91.0" prefWidth="389.0" text="Симметричный алгоритм шифрования- DES. Размер ключа 64 бита(ипользуется UNICODE) Размер блока 128 бит" textFill="#c2c2c2" wrapText="true">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="topLabel11" layoutX="16.0" layoutY="116.0" prefHeight="103.0" prefWidth="389.0" text="Ассиметричный алгоритм шифрования для шифрования ключей симметричного алгоритма- RSA" textFill="#c2c2c2" wrapText="true">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Button layoutX="427.0" layoutY="83.0" mnemonicParsing="false" onAction="#onShifrText" prefHeight="45.0" prefWidth="140.0" styleClass="login-btn" text="Включить/Отключить" />
+            <Label fx:id="topLabel13" layoutX="210.0" layoutY="1.0" text="Шифрование текста" textFill="#c2c2c2" wrapText="true">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+        <Pane layoutY="288.0" prefHeight="226.0" prefWidth="585.0" styleClass="parent1">
+            <children>
+                <Label fx:id="topLabel12" layoutX="14.0" layoutY="14.0" prefHeight="103.0" prefWidth="389.0" text="Алгоритм хэширования - SHA2" textFill="#c2c2c2" wrapText="true">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <Label fx:id="topLabel113" layoutX="14.0" layoutY="77.0" prefHeight="103.0" prefWidth="389.0" text="Ассиметричный алгоритм шифрования для шифрования для ЭЦП - Diffie-Hellman" textFill="#c2c2c2" wrapText="true">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </Label>
+                <Button layoutX="427.0" layoutY="83.0" mnemonicParsing="false" onAction="#onECP" prefHeight="45.0" prefWidth="140.0" styleClass="login-btn" text="Включить/Отключить" />
+            <Label fx:id="topLabel121" layoutX="273.0" layoutY="-3.0" prefHeight="35.0" prefWidth="40.0" text="ЭЦП" textFill="#c2c2c2" wrapText="true">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            </children>
+        </Pane>
+      <Pane fx:id="shifrTextPane" layoutX="604.0" layoutY="47.0" prefHeight="226.0" prefWidth="341.0" styleClass="parent1" visible="false">
+         <children>
+            <Button layoutX="208.0" layoutY="167.0" mnemonicParsing="false" onAction="#onECP" prefHeight="45.0" prefWidth="126.0" styleClass="login-btn" text="Подтвердить" />
+            <Label fx:id="topLabel12111" layoutX="201.0" layoutY="-3.0" prefHeight="35.0" prefWidth="140.0" text="Шифрование текста" textFill="#c2c2c2" wrapText="true">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <TextField layoutX="26.0" layoutY="52.0" prefHeight="25.0" prefWidth="300.0" promptText="ключ DES" />
+            <TextField layoutX="26.0" layoutY="127.0" prefHeight="25.0" prefWidth="140.0" promptText="p" />
+            <TextField layoutX="187.0" layoutY="127.0" prefHeight="25.0" prefWidth="140.0" promptText="q" />
+            <Label fx:id="topLabel121111" layoutX="26.0" layoutY="90.0" prefHeight="35.0" prefWidth="212.0" text="Простые числа для RSA" textFill="#c2c2c2" wrapText="true">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+      <Pane fx:id="ECPPane" layoutX="604.0" layoutY="288.0" prefHeight="226.0" prefWidth="341.0" styleClass="parent1" visible="false">
+         <children>
+            <Button layoutX="139.0" layoutY="158.0" mnemonicParsing="false" onAction="#onECP" prefHeight="45.0" prefWidth="126.0" styleClass="login-btn" text="Включить" />
+            <Label fx:id="topLabel1211" layoutX="302.0" layoutY="-3.0" prefHeight="35.0" prefWidth="40.0" text="ЭЦП" textFill="#c2c2c2" wrapText="true">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </Pane>
+    </children>
+</AnchorPane>

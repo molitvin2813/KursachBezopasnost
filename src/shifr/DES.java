@@ -38,11 +38,11 @@ public class DES {
     /**
      * ключ для шифрования данных
      */
-    private String decodeKeyWord;
+    private String encodeKeyWord;
     /**
      * ключ для расшифрования данных
      */
-    private String encodeKeyWord;
+    private String decodeKeyWord;
 
     /**
      * конструктор класса DES без параметров
@@ -50,7 +50,7 @@ public class DES {
      */
     public DES(){
         inputData = "";
-        decodeKeyWord = "";
+        encodeKeyWord = "";
     }
 
     /**
@@ -61,7 +61,7 @@ public class DES {
      */
     public DES(String inputData,String key){
         this.inputData = StringToRightLength(inputData);
-        this.decodeKeyWord = key;
+        this.encodeKeyWord = key;
     }
 
     /**
@@ -306,15 +306,6 @@ public class DES {
         for (int i = 0; i < blocksData.length; i++)
             result += blocksData[i];
 
-        FileWriter sw = null;
-        try {
-            sw = new FileWriter("out1.txt",false);
-            sw.write(StringFromBinaryToNormalFormat(result));
-            sw.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         return StringFromBinaryToNormalFormat(result);
     }
 
@@ -322,7 +313,7 @@ public class DES {
      * Метод, реализующий расшифрование текста
      * @return String расшифрованный текст
      */
-    public String DecodeDES(){
+    public String DecodeDES(String inputData,String decodeKeyWord){
         String s = inputData;
 
         String key = StringToBinaryFormat(decodeKeyWord);
