@@ -85,7 +85,7 @@
                </font>
             </Button>
             <WebView fx:id="messageView" layoutX="227.0" layoutY="101.0" prefHeight="388.0" prefWidth="655.0" />
-            <ListView fx:id="emailListView" layoutX="14.0" layoutY="101.0" prefHeight="388.0" prefWidth="200.0" />
+            <ListView fx:id="emailListView" layoutX="14.0" layoutY="101.0" onMouseClicked="#showSelectedMessage" prefHeight="388.0" prefWidth="200.0" />
             <ChoiceBox fx:id="folderChoice" layoutX="14.0" layoutY="52.0" prefHeight="45.0" prefWidth="150.0" />
             <Button layoutX="169.0" layoutY="52.0" onAction="#choiceFolder" prefHeight="45.0" prefWidth="45.0" styleClass="login-btn">
                <font>

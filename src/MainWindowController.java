@@ -180,17 +180,12 @@ public class MainWindowController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        folderChoice.setItems(readEmail.getFolderList());
-       /* readEmail.setIMAP_AUTH_EMAIL(emailChoice.getValue().toString());
+        readEmail.setIMAP_AUTH_EMAIL(emailChoice.getValue().toString());
         readEmail.setIMAP_AUTH_PWD(password);
         readEmail.setIMAP_Port("993");
         readEmail.setIMAP_Server(getIMAPServer(readEmail.getIMAP_AUTH_EMAIL()));
-        WebEngine webEngine = messageView.getEngine();
-        webEngine.loadContent( readEmail.getBodyMessage(19),"text/html");
 
-        emailListView.setItems(readEmail.readEmailFromServer());
-
-        */
+        folderChoice.setItems(readEmail.getFolderList());
     }
 
     /**
@@ -294,27 +289,16 @@ public class MainWindowController implements Initializable {
      */
     @FXML
     private void choiceFolder(ActionEvent actionEvent){
-        String query = "SELECT * FROM user_email WHERE email = '" + emailChoice.getValue().toString() +"';";
-        String password ="";
-
-        try {
-            LoginController.rs = LoginController.stmt.executeQuery(query);
-            LoginController.rs.next();
-            password= (LoginController.rs.getString("password_from_email"));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
         readEmail.setCurrentFolder(folderChoice.getValue().toString());
-
-        readEmail.setIMAP_AUTH_EMAIL(emailChoice.getValue().toString());
-        readEmail.setIMAP_AUTH_PWD(password);
-        readEmail.setIMAP_Port("993");
-        readEmail.setIMAP_Server(getIMAPServer(readEmail.getIMAP_AUTH_EMAIL()));
-
         emailListView.setItems(readEmail.readEmailFromServer());
     }
 
 
-
+    public void showSelectedMessage(MouseEvent mouseEvent) {
+        if(readEmail.getCurrentFolder()!=null) {
+            int id = emailListView.getSelectionModel().getSelectedIndex();
+            WebEngine webEngine = messageView.getEngine();
+            webEngine.loadContent(readEmail.getBodyMessage(id), "text/html");
+        }
+    }
 }

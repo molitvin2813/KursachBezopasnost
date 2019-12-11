@@ -55,7 +55,7 @@ public class ReadEmail
         this.IMAP_AUTH_PWD = IMAP_AUTH_PWD;
         this.IMAP_Server = IMAP_Server;
         this.IMAP_Port = IMAP_Port;
-        currentFolder = "INBOX";
+        currentFolder = null;
     }
 
     /**
@@ -67,7 +67,7 @@ public class ReadEmail
         IMAP_AUTH_PWD   = "2813Andrei" ;
         IMAP_Server     = "imap.yandex.ua";
         IMAP_Port       = "993";
-        currentFolder = "INBOX";
+        currentFolder = null;
     }
 
 
@@ -174,10 +174,8 @@ public class ReadEmail
             for (int i = 0; i < mp.getCount(); i++) {
                 BodyPart bp = mp.getBodyPart(i);
                 if (bp.getFileName() == null)
-                    //System.out.println("    " + i + ". сообщение : '" + bp.getContent() + "'");
                     messageList+=(bp.getContent() + "");
                 else
-                    //System.out.println("    " + i + ". файл : '" + bp.getFileName() + "'");
                     messageList+=(bp.getFileName() + "");
             }
         }catch (NoSuchProviderException e) {
