@@ -19,6 +19,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -31,7 +33,8 @@ import javax.swing.*;
  * @version  1.0
  */
 public class MainWindowController implements Initializable {
-
+    @FXML
+    private WebView messageView;
     @FXML
     private AnchorPane paneForDeleteMail;
     @FXML
@@ -52,6 +55,8 @@ public class MainWindowController implements Initializable {
     private AnchorPane parent;
     @FXML
     private HBox top;
+    @FXML
+    private ChoiceBox folderChoice;
 
     private ReadEmail readEmail;
 
@@ -175,13 +180,17 @@ public class MainWindowController implements Initializable {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
-        readEmail.setIMAP_AUTH_EMAIL(emailChoice.getValue().toString());
+        folderChoice.setItems(readEmail.getFolderList());
+       /* readEmail.setIMAP_AUTH_EMAIL(emailChoice.getValue().toString());
         readEmail.setIMAP_AUTH_PWD(password);
         readEmail.setIMAP_Port("993");
         readEmail.setIMAP_Server(getIMAPServer(readEmail.getIMAP_AUTH_EMAIL()));
+        WebEngine webEngine = messageView.getEngine();
+        webEngine.loadContent( readEmail.getBodyMessage(19),"text/html");
 
         emailListView.setItems(readEmail.readEmailFromServer());
+
+        */
     }
 
     /**
@@ -234,7 +243,8 @@ public class MainWindowController implements Initializable {
      * с аккаунта пользователя почтового клиента
      * @param actionEvent событие
      */
-    public void choiceEMailForDelete(ActionEvent actionEvent) {
+    @FXML
+    private void choiceEMailForDelete(ActionEvent actionEvent) {
         String query ="DELETE FROM user_email WHERE email = '"+ emailChoiceForDelete.getValue() + "';";
 
         try {
@@ -249,7 +259,12 @@ public class MainWindowController implements Initializable {
         emailChoiceForDelete.setItems(updateDataChoiceBox());
     }
 
-    public void sendMessage(ActionEvent actionEvent) {
+    /**
+     * Код для кнопки, который реализует переход на форму отправки сообщения SendMessage.fxml
+     * @param actionEvent событие
+     */
+    @FXML
+    private void sendMessage(ActionEvent actionEvent) {
         Stage tmp = (Stage) parent.getScene().getWindow();
         tmp.close();
 
@@ -272,4 +287,34 @@ public class MainWindowController implements Initializable {
         SendMessage.stage = stage;
         stage.show();
     }
+
+    /**
+     * Код для кнопки, который реализует выбор текущей папка на почтовом сервере
+     * @param actionEvent событие кнопки
+     */
+    @FXML
+    private void choiceFolder(ActionEvent actionEvent){
+        String query = "SELECT * FROM user_email WHERE email = '" + emailChoice.getValue().toString() +"';";
+        String password ="";
+
+        try {
+            LoginController.rs = LoginController.stmt.executeQuery(query);
+            LoginController.rs.next();
+            password= (LoginController.rs.getString("password_from_email"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        readEmail.setCurrentFolder(folderChoice.getValue().toString());
+
+        readEmail.setIMAP_AUTH_EMAIL(emailChoice.getValue().toString());
+        readEmail.setIMAP_AUTH_PWD(password);
+        readEmail.setIMAP_Port("993");
+        readEmail.setIMAP_Server(getIMAPServer(readEmail.getIMAP_AUTH_EMAIL()));
+
+        emailListView.setItems(readEmail.readEmailFromServer());
+    }
+
+
+
 }

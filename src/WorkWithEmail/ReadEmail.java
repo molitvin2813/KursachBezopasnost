@@ -38,6 +38,11 @@ public class ReadEmail
     private String   IMAP_Port;
 
     /**
+     * Текущая папка
+     */
+    private String currentFolder;
+
+    /**
      * Конструктор для класса ReadMail с параметрами
      * @see ReadEmail#ReadEmail()
      * @param IMAP_AUTH_EMAIL   почта пользователя
@@ -50,6 +55,7 @@ public class ReadEmail
         this.IMAP_AUTH_PWD = IMAP_AUTH_PWD;
         this.IMAP_Server = IMAP_Server;
         this.IMAP_Port = IMAP_Port;
+        currentFolder = "INBOX";
     }
 
     /**
@@ -61,11 +67,13 @@ public class ReadEmail
         IMAP_AUTH_PWD   = "2813Andrei" ;
         IMAP_Server     = "imap.yandex.ua";
         IMAP_Port       = "993";
+        currentFolder = "INBOX";
     }
 
 
     /**
-     * Метод для реализации возможности чтения писем с сервера
+     * Получаем весь список сообщений
+     * @return ObservableList<String> список сообщений
      */
     public ObservableList<String> readEmailFromServer() {
         ObservableList<String> messageList = FXCollections.observableArrayList();
@@ -95,7 +103,7 @@ public class ReadEmail
             store.connect(IMAP_Server, IMAP_AUTH_EMAIL, IMAP_AUTH_PWD);
 
 
-            Folder inbox = store.getFolder("INBOX");
+            Folder inbox = store.getFolder(currentFolder);
 
             // Открываем папку в режиме только для чтения
             inbox.open(Folder.READ_ONLY);
@@ -118,8 +126,13 @@ public class ReadEmail
         return messageList;
     }
 
-    public ObservableList<String> getBodyMessage(){
-        ObservableList<String> messageList = FXCollections.observableArrayList();
+    /**
+     * Получаем письмо с указанным индекосм
+     * @param index индекс письма
+     * @return String текст письма
+     */
+    public String getBodyMessage(int index){
+        String messageList = "";
         Properties properties = new Properties();
         properties.put("mail.debug"           , "false"  );
         properties.put("mail.store.protocol"  , "imap"  );
@@ -146,7 +159,7 @@ public class ReadEmail
             store.connect(IMAP_Server, IMAP_AUTH_EMAIL, IMAP_AUTH_PWD);
 
 
-            Folder inbox = store.getFolder("INBOX");
+            Folder inbox = store.getFolder(currentFolder);
 
             // Открываем папку в режиме только для чтения
             inbox.open(Folder.READ_ONLY);
@@ -157,15 +170,15 @@ public class ReadEmail
             // Последнее сообщение; первое сообщение под номером 1
             Message[] message = inbox.getMessages();
 
-            Multipart mp = (Multipart) message[0].getContent();
+            Multipart mp = (Multipart) message[index].getContent();
             for (int i = 0; i < mp.getCount(); i++) {
                 BodyPart bp = mp.getBodyPart(i);
                 if (bp.getFileName() == null)
                     //System.out.println("    " + i + ". сообщение : '" + bp.getContent() + "'");
-                    messageList.add(bp.getContent() + "");
+                    messageList+=(bp.getContent() + "");
                 else
                     //System.out.println("    " + i + ". файл : '" + bp.getFileName() + "'");
-                    messageList.add(bp.getFileName() + "");
+                    messageList+=(bp.getFileName() + "");
             }
         }catch (NoSuchProviderException e) {
             e.printStackTrace();
@@ -178,6 +191,48 @@ public class ReadEmail
 
     }
 
+    /**
+     * Получаетм список папок всех папок на почтовом сервере
+     * @return ObservableList<String> список папок
+     */
+    public ObservableList<String> getFolderList(){
+        ObservableList<String> folderList = FXCollections.observableArrayList();
+        Properties properties = new Properties();
+        properties.put("mail.debug"           , "false"  );
+        properties.put("mail.store.protocol"  , "imap"  );
+
+        MailSSLSocketFactory sf = null;
+        try {
+            sf = new MailSSLSocketFactory();
+        } catch (GeneralSecurityException e) {
+            e.printStackTrace();
+        }
+        sf.setTrustAllHosts(true);
+        properties.put("mail.imap.starttls.enable", "true");
+        properties.put("mail.imap.ssl.socketFactory", sf);
+        properties.put("mail.imaps.port"       , IMAP_Port);
+
+        Authenticator auth = new EmailAuthenticator(IMAP_AUTH_EMAIL, IMAP_AUTH_PWD);
+        Session session = Session.getDefaultInstance(properties, auth);
+        session.setDebug(false);
+
+        try {
+            Store store = session.getStore();
+
+            // Подключение к почтовому серверу
+            store.connect(IMAP_Server, IMAP_AUTH_EMAIL, IMAP_AUTH_PWD);
+
+            Folder[] f = store.getDefaultFolder().list();
+            for(Folder fd: f)
+                folderList.add(fd.getFullName());
+        }catch (NoSuchProviderException e) {
+            e.printStackTrace();
+        } catch (MessagingException e) {
+            e.printStackTrace();
+        }
+
+            return folderList;
+    }
 
     public String getIMAP_AUTH_EMAIL(){
         return IMAP_AUTH_EMAIL;
@@ -191,7 +246,9 @@ public class ReadEmail
     public String getIMAP_Server() {
         return IMAP_Server;
     }
-
+    public String getCurrentFolder() {
+        return currentFolder;
+    }
 
     public void setIMAP_AUTH_EMAIL(String IMAP_AUTH_EMAIL) {
         this.IMAP_AUTH_EMAIL = IMAP_AUTH_EMAIL;
@@ -204,5 +261,8 @@ public class ReadEmail
     }
     public void setIMAP_Server(String IMAP_Server) {
         this.IMAP_Server = IMAP_Server;
+    }
+    public void setCurrentFolder(String currentFolder) {
+        this.currentFolder = currentFolder;
     }
 }

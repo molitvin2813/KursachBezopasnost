@@ -5,6 +5,7 @@
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.scene.web.*?>
 
 <AnchorPane id="AnchorPane" fx:id="parent" minWidth="-Infinity" prefHeight="580.0" prefWidth="1252.0" styleClass="main-window-menu" stylesheets="@../css/Stylesheet.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainWindowController">
    <children>
@@ -62,7 +63,7 @@
                   <Font size="20.0" />
                </font>
             </Label>
-            <Label fx:id="labelFolders" layoutX="14.0" layoutY="52.0" prefHeight="35.0" prefWidth="66.0" text="Папки" textFill="#adadad">
+            <Label fx:id="labelFolders" layoutX="14.0" layoutY="20.0" prefHeight="35.0" prefWidth="66.0" text="Папки" textFill="#adadad">
                <font>
                   <Font size="20.0" />
                </font>
@@ -78,12 +79,25 @@
                </font>
             </Button>
             <ChoiceBox fx:id="emailChoice" layoutX="440.0" layoutY="52.0" prefHeight="45.0" prefWidth="236.0" />
-            <TreeView layoutX="16.0" layoutY="101.0" prefHeight="388.0" prefWidth="196.0" />
-            <ListView fx:id="emailListView" layoutX="233.0" layoutY="101.0" prefHeight="388.0" prefWidth="650.0" />
             <Button layoutX="687.0" layoutY="499.0" onAction="#sendMessage" prefHeight="35.0" prefWidth="196.0" styleClass="login-btn" text="Написать сообщение">
                <font>
                   <Font size="14.0" />
                </font>
+            </Button>
+            <WebView fx:id="messageView" layoutX="227.0" layoutY="101.0" prefHeight="388.0" prefWidth="655.0" />
+            <ListView fx:id="emailListView" layoutX="14.0" layoutY="101.0" prefHeight="388.0" prefWidth="200.0" />
+            <ChoiceBox fx:id="folderChoice" layoutX="14.0" layoutY="52.0" prefHeight="45.0" prefWidth="150.0" />
+            <Button layoutX="169.0" layoutY="52.0" onAction="#choiceFolder" prefHeight="45.0" prefWidth="45.0" styleClass="login-btn">
+               <font>
+                  <Font size="14.0" />
+               </font>
+               <graphic>
+                  <ImageView fitHeight="22.0" fitWidth="22.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../icons/ok-mark.png" />
+                     </image>
+                  </ImageView>
+               </graphic>
             </Button>
          </children>
       </Pane>
