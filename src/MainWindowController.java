@@ -294,12 +294,37 @@ public class MainWindowController implements Initializable {
         emailListView.setItems(readEmail.readEmailFromServer());
     }
 
-
-    public void showSelectedMessage(MouseEvent mouseEvent) {
+    @FXML
+    private void showSelectedMessage(MouseEvent mouseEvent) {
         if(readEmail.getCurrentFolder()!=null) {
             int id = emailListView.getSelectionModel().getSelectedIndex();
             WebEngine webEngine = messageView.getEngine();
             webEngine.loadContent(readEmail.getBodyMessage(id), "text/html");
         }
+    }
+
+    @FXML
+    private void shifrManagerShow(ActionEvent actionEvent) {
+        Stage tmp = (Stage) parent.getScene().getWindow();
+        tmp.close();
+
+        FXMLLoader loader = new FXMLLoader();
+        loader.setLocation(getClass().getResource("/views/shifrManager.fxml"));
+        try {
+            loader.load();
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+        Parent root = loader.getRoot();
+        Stage stage = new Stage();
+        Scene scene = new Scene(root);
+        scene.setFill(null);
+        stage.setScene(scene);
+
+        stage.initStyle(StageStyle.TRANSPARENT);
+
+        ShifrManager.stage = stage;
+        stage.show();
     }
 }

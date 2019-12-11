@@ -99,6 +99,11 @@
                   </ImageView>
                </graphic>
             </Button>
+            <Button layoutX="16.0" layoutY="499.0" onAction="#shifrManagerShow" prefHeight="35.0" prefWidth="196.0" styleClass="login-btn" text="Менеджер криптографии">
+               <font>
+                  <Font size="14.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
       <AnchorPane fx:id="paneForAddNewMail" layoutX="923.0" layoutY="-1.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="280.0" prefWidth="329.0" styleClass="parent1" visible="false">

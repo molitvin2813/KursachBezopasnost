@@ -4,12 +4,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -21,6 +23,12 @@ import java.util.ResourceBundle;
  */
 public class ShifrManager implements Initializable {
 
+    @FXML
+    private TextField desKey;
+    @FXML
+    private TextField textRSAQ;
+    @FXML
+    private TextField textRSAP;
     @FXML
     private Pane ECPPane;
     @FXML
@@ -52,7 +60,7 @@ public class ShifrManager implements Initializable {
     private double xOffSet = 0;
     private double yOffSet = 0;
     public static Stage stage = null;
-    
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         makeStageDragable();
@@ -109,15 +117,32 @@ public class ShifrManager implements Initializable {
         tmp.close();
     }
 
+    /**
+     * Включаем шифрование текста и показываем форму с доп параметрами
+     * @param actionEvent событие мыши
+     */
     @FXML
     private void onShifrText(ActionEvent actionEvent) {
         shifrTextPane.setVisible(shifrText);
         shifrText= !shifrText;
     }
+
+    /**
+     * Включаем ЭЦП и показываем форму с доп параметрами
+     * @param actionEvent событие мыши
+     */
     @FXML
     private void onECP(ActionEvent actionEvent) {
         ECPPane.setVisible(ECP);
         ECP= !ECP;
     }
 
+    JFrame frame = new JFrame("JOptionPane showMessageDialog example");
+    @FXML
+    private void addParamShifrText(ActionEvent actionEvent) {
+        DESEncryptKey = desKey.getText();
+        RSAP = Integer.parseInt(textRSAP.getText());
+        RSAQ = Integer.parseInt(textRSAQ.getText());
+        JOptionPane.showMessageDialog(frame, "Параметры обновлены");
+    }
 }
