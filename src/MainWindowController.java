@@ -1,6 +1,8 @@
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import WorkWithEmail.ReadEmail;
@@ -24,6 +26,7 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import shifr.DES;
+import shifr.RSA;
 
 import javax.swing.*;
 
@@ -187,6 +190,7 @@ public class MainWindowController implements Initializable {
         readEmail.setIMAP_Server(getIMAPServer(readEmail.getIMAP_AUTH_EMAIL()));
 
         folderChoice.setItems(readEmail.getFolderList());
+        emailListView.setItems(null);
     }
 
     /**
@@ -299,10 +303,36 @@ public class MainWindowController implements Initializable {
         if(readEmail.getCurrentFolder()!=null) {
             int id = emailListView.getSelectionModel().getSelectedIndex();
             WebEngine webEngine = messageView.getEngine();
-            webEngine.loadContent(readEmail.getBodyMessage(id), "text/html");
+            if(!ShifrManager.shifrText) {
+                webEngine.loadContent(readEmail.getBodyMessage(id), "text/html");
+            }else{
+                String text = readEmail.getBodyMessage(id);
+                webEngine.loadContent(getDecodeText(text), "text/html");
+            }
         }
     }
 
+    /**
+     * метод, который расшифровывает текст
+     * @param text зашифрованный текст
+     * @return String расшифрованный текст
+     */
+    private String getDecodeText(String text){
+        //arr[0] - зашифрованный текст
+        //arr[1] - des ключ(зашифрованный)
+        //arr[2] - rsa ключ d
+        //arr[3] - rsa ключ n
+
+        String[] arr = text.split("\\*end\\*");
+        List<String> key = Arrays.asList(arr[1].split(","));
+        RSA rsa = new RSA();
+        rsa.setInputDataForDecode(key);
+        rsa.setD(Long.parseLong(arr[2]));
+        rsa.setN(Long.parseLong(arr[3]));
+
+        DES des = new DES();
+        return  des.DecodeDES(arr[0],rsa.RSADecode());
+    }
     @FXML
     private void shifrManagerShow(ActionEvent actionEvent) {
         Stage tmp = (Stage) parent.getScene().getWindow();

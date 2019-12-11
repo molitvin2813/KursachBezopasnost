@@ -236,6 +236,9 @@ public class RSA {
     public String getInputData() {
         return inputData;
     }
+    public List<String> getInputDataForDecode() {
+        return inputDataForDecode;
+    }
 
     public void setD(long d) {
         this.d = d;
@@ -251,5 +254,8 @@ public class RSA {
     }
     public void setInputData(String inputData) {
         this.inputData = inputData;
+    }
+    public void setInputDataForDecode(List<String> inputDataForDecode) {
+        this.inputDataForDecode = inputDataForDecode;
     }
 }

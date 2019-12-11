@@ -1,12 +1,14 @@
 package WorkWithEmail;
 
 import com.sun.mail.util.MailSSLSocketFactory;
+import shifr.DES;
 
 import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.mail.*;
 import javax.mail.internet.*;
 import java.security.GeneralSecurityException;
+import java.util.List;
 import java.util.Properties;
 
 /**
@@ -71,14 +73,14 @@ public class SendEmail
      * @param text текст сообщения
      * @return возвращает подтверждения того, что письмо было успешно отправленно
      */
-    public boolean sendMessage (final String text)
-    {
+    public boolean sendMessage (final String text) {
         boolean result = false;
         try {
             // Содержимое сообщения
             Multipart mmp = new MimeMultipart();
             // Текст сообщения
             MimeBodyPart bodyPart = new MimeBodyPart();
+            //DES des = new DES(text);
             bodyPart.setContent(text, "text/html; charset=utf-8");
             mmp.addBodyPart(bodyPart);
             // Вложение файла в сообщение
@@ -93,7 +95,6 @@ public class SendEmail
             result = true;
         } catch (MessagingException e){
             // Ошибка отправки сообщения
-            System.err.println(e.getMessage());
             e.printStackTrace();
         }
         return result;
@@ -115,5 +116,44 @@ public class SendEmail
         mbp.setDataHandler(new DataHandler(fds));
         mbp.setFileName(fds.getName());
         return mbp;
+    }
+
+    /**
+     * Метод для отправки зашифрованного текста
+     * @param text зашифрованный текст
+     * @param desKeyEncrypted зашифрованный ключ
+     * @param d ключ от RSA
+     * @param n ключ от RSA
+     */
+    public void sendMessage(String text, List<String> desKeyEncrypted, long d, long n) {
+        try {
+            // Содержимое сообщения
+            Multipart mmp = new MimeMultipart();
+            // Текст сообщения
+            MimeBodyPart bodyPart = new MimeBodyPart();
+
+            text+="*end*";
+            for(String s:desKeyEncrypted){
+                text+=s+",";
+            }
+            bodyPart.setContent(text +"*end*"+
+                    +d+"*end*"+n, "text/html; charset=utf-8");
+            mmp.addBodyPart(bodyPart);
+
+
+
+            // Вложение файла в сообщение
+            if (FILE_PATH != null) {
+                MimeBodyPart mbr = createFileAttachment(FILE_PATH);
+                mmp.addBodyPart(mbr);
+            }
+            // Определение контента сообщения
+            message.setContent(mmp);
+            // Отправка сообщения
+            Transport.send(message);
+        } catch (MessagingException e){
+            // Ошибка отправки сообщения
+            e.printStackTrace();
+        }
     }
 }

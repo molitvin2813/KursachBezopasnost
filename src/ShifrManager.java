@@ -63,6 +63,8 @@ public class ShifrManager implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        shifrTextPane.setVisible(shifrText);
+        ECPPane.setVisible(ECP);
         makeStageDragable();
     }
     private void makeStageDragable() {
@@ -123,8 +125,8 @@ public class ShifrManager implements Initializable {
      */
     @FXML
     private void onShifrText(ActionEvent actionEvent) {
-        shifrTextPane.setVisible(shifrText);
         shifrText= !shifrText;
+        shifrTextPane.setVisible(shifrText);
     }
 
     /**

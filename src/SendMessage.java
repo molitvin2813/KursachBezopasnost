@@ -17,12 +17,14 @@ import javafx.scene.web.HTMLEditor;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import shifr.DES;
+import shifr.RSA;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class SendMessage implements Initializable {
@@ -154,7 +156,23 @@ public class SendMessage implements Initializable {
 
 
         SendEmail se = new SendEmail(txtFieldEmailTo.getText(), txtFieldHeader.getText());
-        se.sendMessage(htmlEditorTextMessage.getHtmlText());
+        if(!ShifrManager.shifrText)
+            se.sendMessage(htmlEditorTextMessage.getHtmlText());
+        else{
+            DES des = new DES(htmlEditorTextMessage.getHtmlText(),ShifrManager.DESEncryptKey);
+            RSA rsa = new RSA();
+
+            String text = des.EncodeDES(); // зашифрованнный текст
+            String key = des.getDecodeKeyWord(); // ключ для расшифрования
+
+            // теперь шифруем этот ключ
+            rsa.setP(ShifrManager.RSAP);
+            rsa.setQ(ShifrManager.RSAQ);
+            rsa.setInputData(key);
+            List<String> desKeyEncrypted =  rsa.RSAEncode();
+
+            se.sendMessage(text, desKeyEncrypted, rsa.getD(),rsa.getN());
+        }
         SendEmail.FILE_PATH      = null;
         JOptionPane.showMessageDialog(frame, "Сообщение отправлено");
     }

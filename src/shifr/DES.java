@@ -299,7 +299,7 @@ public class DES {
 
         key = KeyToPrevRound(key);
 
-        decodeKeyWord = StringFromBinaryToNormalFormat(key);
+        decodeKeyWord =  key;
 
         String result = "";
 
@@ -316,7 +316,7 @@ public class DES {
     public String DecodeDES(String inputData,String decodeKeyWord){
         String s = inputData;
 
-        String key = StringToBinaryFormat(decodeKeyWord);
+        String key = decodeKeyWord;
 
         s = StringToBinaryFormat(s);
 

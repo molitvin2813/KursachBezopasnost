@@ -93,7 +93,7 @@ public class ReadEmail
         properties.put("mail.imaps.port"       , IMAP_Port);
 
         Authenticator auth = new EmailAuthenticator(IMAP_AUTH_EMAIL, IMAP_AUTH_PWD);
-        Session session = Session.getDefaultInstance(properties, auth);
+        Session session = Session.getInstance(properties, auth);
         session.setDebug(false);
 
         try {
@@ -149,7 +149,7 @@ public class ReadEmail
         properties.put("mail.imaps.port"       , IMAP_Port);
 
         Authenticator auth = new EmailAuthenticator(IMAP_AUTH_EMAIL, IMAP_AUTH_PWD);
-        Session session = Session.getDefaultInstance(properties, auth);
+        Session session = Session.getInstance(properties, auth);
         session.setDebug(false);
 
         try {
