@@ -13,6 +13,7 @@ import javafx.stage.StageStyle;
 
 import javax.swing.*;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -23,6 +24,12 @@ import java.util.ResourceBundle;
  */
 public class ShifrManager implements Initializable {
 
+    @FXML
+    private TextField textDHPrivateKey;
+    @FXML
+    private TextField textDHP;
+    @FXML
+    private TextField textDHQ;
     @FXML
     private TextField desKey;
     @FXML
@@ -57,6 +64,15 @@ public class ShifrManager implements Initializable {
      * Простое число p для RSA
      */
     public static int RSAP;
+    /**
+     * простой модуль для Диффи-Хеллмана
+     */
+    public static BigInteger DHP;
+    /**
+     * генератор для Диффи-Хеллмана
+     */
+    public static BigInteger DHQ;
+
     private double xOffSet = 0;
     private double yOffSet = 0;
     public static Stage stage = null;
@@ -140,11 +156,26 @@ public class ShifrManager implements Initializable {
     }
 
     JFrame frame = new JFrame("JOptionPane showMessageDialog example");
+    /**
+     * Метод, который задает параметры для RSA и DES
+     * @param actionEvent событие кнопки
+     */
     @FXML
     private void addParamShifrText(ActionEvent actionEvent) {
         DESEncryptKey = desKey.getText();
         RSAP = Integer.parseInt(textRSAP.getText());
         RSAQ = Integer.parseInt(textRSAQ.getText());
-        JOptionPane.showMessageDialog(frame, "Параметры обновлены");
+        JOptionPane.showMessageDialog(frame, "Параметры для RSA и DES обновлены");
+    }
+
+    /**
+     * Метод, который задает параметры для ECP
+     * @param actionEvent событие кнопки
+     */
+    @FXML
+    private void addParamECP(ActionEvent actionEvent) {
+        DHP = new BigInteger(textDHP.getText());
+        DHQ = new BigInteger(textDHQ.getText());
+        JOptionPane.showMessageDialog(frame, "Параметры для ECP обновлены");
     }
 }

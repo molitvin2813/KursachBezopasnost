@@ -27,6 +27,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import shifr.DES;
 import shifr.RSA;
+import shifr.SHA2;
 
 import javax.swing.*;
 

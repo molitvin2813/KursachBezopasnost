@@ -98,9 +98,9 @@
             </Label>
             </children>
         </Pane>
-      <Pane fx:id="shifrTextPane" layoutX="604.0" layoutY="47.0" prefHeight="226.0" prefWidth="341.0" styleClass="parent1" visible="false">
+      <Pane fx:id="shifrTextPane" layoutX="604.0" layoutY="47.0" prefHeight="226.0" prefWidth="341.0" styleClass="parent1">
          <children>
-            <Button layoutX="208.0" layoutY="167.0" mnemonicParsing="false" onAction="#addParamShifrText" prefHeight="45.0" prefWidth="126.0" styleClass="login-btn" text="Подтвердить" />
+            <Button layoutX="201.0" layoutY="167.0" mnemonicParsing="false" onAction="#addParamShifrText" prefHeight="45.0" prefWidth="126.0" styleClass="login-btn" text="Подтвердить" />
             <Label fx:id="topLabel12111" layoutX="201.0" layoutY="-3.0" prefHeight="35.0" prefWidth="140.0" text="Шифрование текста" textFill="#c2c2c2" wrapText="true">
                <font>
                   <Font size="15.0" />
@@ -116,14 +116,17 @@
             </Label>
          </children>
       </Pane>
-      <Pane fx:id="ECPPane" layoutX="604.0" layoutY="288.0" prefHeight="226.0" prefWidth="341.0" styleClass="parent1" visible="false">
+      <Pane fx:id="ECPPane" layoutX="604.0" layoutY="288.0" prefHeight="226.0" prefWidth="341.0" styleClass="parent1">
          <children>
-            <Button layoutX="139.0" layoutY="158.0" mnemonicParsing="false" onAction="#onECP" prefHeight="45.0" prefWidth="126.0" styleClass="login-btn" text="Включить" />
+            <Button layoutX="201.0" layoutY="167.0" mnemonicParsing="false" onAction="#addParamECP" prefHeight="45.0" prefWidth="126.0" styleClass="login-btn" text="Подтвердить" />
             <Label fx:id="topLabel1211" layoutX="302.0" layoutY="-3.0" prefHeight="35.0" prefWidth="40.0" text="ЭЦП" textFill="#c2c2c2" wrapText="true">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
+            <TextField fx:id="textDHP" layoutX="21.0" layoutY="42.0" prefHeight="45.0" prefWidth="147.0" promptText="Простой модуль" styleClass="txtfield" />
+            <TextField fx:id="textDHQ" layoutX="180.0" layoutY="42.0" prefHeight="45.0" prefWidth="140.0" promptText="Генератор" styleClass="txtfield" />
+            <TextField fx:id="textDHPrivateKey" layoutX="21.0" layoutY="106.0" prefHeight="45.0" prefWidth="300.0" promptText="Приватное число" styleClass="txtfield" />
          </children>
       </Pane>
     </children>
