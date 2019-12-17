@@ -261,7 +261,6 @@ public class DES {
             int a = 0;
             int degree = char_binary.length- 1;
 
-
             for (char c: char_binary)
                 a += Integer.parseInt(c+"") * (int)Math.pow(2, degree--);
 
@@ -277,14 +276,9 @@ public class DES {
      */
     public String EncodeDES(){
         String s = inputData;
-
         String key = encodeKeyWord;
-
-
         s = StringToRightLength(s);
-
         CutStringIntoBlocks(s);
-
         key = CorrectKeyWord(key, s.length() / (2 * blocksData.length));
         String correctKey= key;
         key = StringToBinaryFormat(key);
@@ -298,9 +292,7 @@ public class DES {
         }
 
         key = KeyToPrevRound(key);
-
         decodeKeyWord =  key;
-
         String result = "";
 
         for (int i = 0; i < blocksData.length; i++)
@@ -331,9 +323,6 @@ public class DES {
         }
 
         key = KeyToNextRound(key);
-
-        //encodeKeyWord = StringFromBinaryToNormalFormat(key);
-
         String result = "";
 
         for (int i = 0; i < blocksData.length; i++)

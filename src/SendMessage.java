@@ -17,6 +17,7 @@ import javafx.scene.web.HTMLEditor;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import shifr.DES;
+import shifr.DiffieHellman;
 import shifr.RSA;
 
 import javax.swing.*;
@@ -27,6 +28,11 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Класс, который является обработчиком формы SendMessage.fxml
+ * @author Akim
+ * @version 1.0
+ */
 public class SendMessage implements Initializable {
     @FXML
     private HTMLEditor htmlEditorTextMessage;
@@ -132,6 +138,14 @@ public class SendMessage implements Initializable {
         stage.show();
     }
 
+    /**
+     * Метод, реализующий отправку сообщение на почтовый сервер
+     * Получаем данные об отправителе, получателе и текст сообщения
+     * @see SendMessage#htmlEditorTextMessage - текст сообщения
+     * @see SendMessage#choiceEmailFrom - отправитель
+     * @see SendMessage#txtFieldEmailTo -получатель
+     * @param actionEvent событие кнопки
+     */
     @FXML
     private void btnSendMessage(ActionEvent actionEvent) {
 
@@ -146,7 +160,7 @@ public class SendMessage implements Initializable {
             e.printStackTrace();
         }
 
-        SendEmail.SMTP_SERVER    = getSMTPServer(choiceEmailFrom.getValue().toString());
+        SendEmail.SMTP_SERVER    = HelpClass.getSMTPServer(choiceEmailFrom.getValue().toString());
 
         SendEmail.SMTP_Port      = "465";
         SendEmail.EMAIL_FROM     = choiceEmailFrom.getValue().toString();
@@ -177,14 +191,46 @@ public class SendMessage implements Initializable {
         JOptionPane.showMessageDialog(frame, "Сообщение отправлено");
     }
 
-    private String getSMTPServer(String mail){
-        String[] arr = mail.split("@");
-        return "smtp."+arr[1];
-    }
     JFrame frame = new JFrame("JOptionPane showMessageDialog example");
-    public void getFile(ActionEvent actionEvent) {
+
+    /**
+     * Метод, который реализует получение пути к файлу на машине
+     * @param actionEvent событие кнопки
+     */
+    @FXML
+    private void getFile(ActionEvent actionEvent) {
         FileDialog fdlg = new FileDialog(frame, "Open file", FileDialog.LOAD);
         fdlg.show();
         SendEmail.FILE_PATH      = fdlg.getDirectory() + fdlg.getFile();
+    }
+
+    /**
+     * Отправляем публичный ключ, простой модуль, генератор от Диффи-Хеллмана
+     * @param actionEvent событие кнопки
+     */
+    @FXML
+    private void sendPublicKeyDH(ActionEvent actionEvent) {
+        String query = "SELECT * FROM user_email WHERE email = '" + choiceEmailFrom.getValue().toString() +"';";
+        String password ="";
+
+        try {
+            LoginController.rs = LoginController.stmt.executeQuery(query);
+            LoginController.rs.next();
+            password= (LoginController.rs.getString("password_from_email"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        SendEmail.SMTP_SERVER    = HelpClass.getSMTPServer(choiceEmailFrom.getValue().toString());
+
+        SendEmail.SMTP_Port      = "465";
+        SendEmail.EMAIL_FROM     = choiceEmailFrom.getValue().toString();
+        SendEmail.SMTP_AUTH_USER = choiceEmailFrom.getValue().toString();
+        SendEmail.SMTP_AUTH_PWD  = password;
+        SendEmail.REPLY_TO       = choiceEmailFrom.getValue().toString();
+
+        DiffieHellman diffieHellman = new DiffieHellman(ShifrManager.DHP, ShifrManager.DHQ,ShifrManager.privateNumber);
+        SendEmail se = new SendEmail(txtFieldEmailTo.getText(), "DH_KEY");
+        se.sendDHPublicKey(diffieHellman.calculatePublicKey(),ShifrManager.DHP,ShifrManager.DHQ);
     }
 }

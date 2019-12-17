@@ -7,6 +7,8 @@ import javax.activation.DataHandler;
 import javax.activation.FileDataSource;
 import javax.mail.*;
 import javax.mail.internet.*;
+import javax.swing.*;
+import java.math.BigInteger;
 import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Properties;
@@ -18,7 +20,7 @@ import java.util.Properties;
  */
 public class SendEmail
 {
-    public  Message message        = null;
+    public          Message  message        = null;
     public  static  String   SMTP_AUTH_USER = null;
     public  static  String   SMTP_AUTH_PWD  = null;
     public  static  String   EMAIL_FROM     = null;
@@ -46,7 +48,7 @@ public class SendEmail
 
         try {
             Authenticator auth = new EmailAuthenticator(SMTP_AUTH_USER, SMTP_AUTH_PWD);
-            Session session = Session.getDefaultInstance(properties, auth);
+            Session session = Session.getInstance(properties, auth);
             session.setDebug(false);
 
             InternetAddress email_from = new InternetAddress(EMAIL_FROM);
@@ -61,10 +63,10 @@ public class SendEmail
 
             if (reply_to != null)
                 message.setReplyTo (new Address[] {reply_to});
-        } catch (AddressException e) {
-            System.err.println(e.getMessage());
         } catch (MessagingException e) {
-            System.err.println(e.getMessage());
+            JOptionPane.showMessageDialog(new JFrame(""),
+                    "Не удалось подключиться к серверу для отправки сообщения\n" +
+                    "SMTP сервер - " + SMTP_SERVER);
         }
     }
 
@@ -94,8 +96,8 @@ public class SendEmail
             Transport.send(message);
             result = true;
         } catch (MessagingException e){
-            // Ошибка отправки сообщения
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(new JFrame(""),
+                    "Не удалось отправить сообщение");
         }
         return result;
     }
@@ -152,8 +154,28 @@ public class SendEmail
             // Отправка сообщения
             Transport.send(message);
         } catch (MessagingException e){
-            // Ошибка отправки сообщения
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(new JFrame(""),
+                    "Не удалось отправить зашифрованное сообщение");
+        }
+    }
+
+    /**
+     * Метод, реализующий отправку побличного ключа Диффи-Хеллмана
+     * @param publicKey публичный ключ
+     * @param p простой модуль
+     * @param q генератор
+     */
+    public void sendDHPublicKey(BigInteger publicKey, BigInteger p, BigInteger q){
+        try {
+            Multipart mmp = new MimeMultipart();
+            MimeBodyPart bodyPart = new MimeBodyPart();
+            bodyPart.setContent(publicKey+"*end*"+p+"*end*"+q,"text/html; charset=utf-8");
+            mmp.addBodyPart(bodyPart);
+            message.setContent(mmp);
+            Transport.send(message);
+        } catch (MessagingException e){
+            JOptionPane.showMessageDialog(new JFrame(""),
+                    "Не удалось отправить сообщение с публичным ключом Диффи-Хеллмана");
         }
     }
 }

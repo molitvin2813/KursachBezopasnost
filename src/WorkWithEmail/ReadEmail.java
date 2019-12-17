@@ -5,6 +5,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import javax.mail.*;
+import javax.swing.*;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Properties;
@@ -118,10 +119,8 @@ public class ReadEmail
                 messageList.add(message[i].getSubject());
             }
 
-        } catch (NoSuchProviderException e) {
-            e.printStackTrace();
         } catch (MessagingException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(new JFrame(""),"Не удалось получить список сообщений с сервера");
         }
         return messageList;
     }
@@ -178,12 +177,8 @@ public class ReadEmail
                 else
                     messageList+=(bp.getFileName() + "");
             }
-        }catch (NoSuchProviderException e) {
-            e.printStackTrace();
-        } catch (MessagingException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (MessagingException | IOException e) {
+            JOptionPane.showMessageDialog(new JFrame(""), "Не удалось получить сообщение");
         }
         return messageList;
 
@@ -223,13 +218,10 @@ public class ReadEmail
             Folder[] f = store.getDefaultFolder().list();
             for(Folder fd: f)
                 folderList.add(fd.getFullName());
-        }catch (NoSuchProviderException e) {
-            e.printStackTrace();
         } catch (MessagingException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(new JFrame("Exception"),"Не удалось подключиться к серверу " + IMAP_Server);
         }
-
-            return folderList;
+        return folderList;
     }
 
     public String getIMAP_AUTH_EMAIL(){

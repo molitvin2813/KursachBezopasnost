@@ -6,7 +6,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane fx:id="parent" prefHeight="520.0" prefWidth="959.0" styleClass="main-window-menu" stylesheets="@../css/Stylesheet.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ShifrManager">
+<AnchorPane fx:id="parent" prefHeight="519.0" prefWidth="1089.0" styleClass="main-window-menu" stylesheets="@../css/Stylesheet.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ShifrManager">
     <children>
         <HBox fx:id="top" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="585.0" styleClass="parent1">
             <padding>
@@ -98,7 +98,7 @@
             </Label>
             </children>
         </Pane>
-      <Pane fx:id="shifrTextPane" layoutX="604.0" layoutY="47.0" prefHeight="226.0" prefWidth="341.0" styleClass="parent1">
+      <Pane fx:id="shifrTextPane" layoutX="604.0" layoutY="47.0" prefHeight="226.0" prefWidth="341.0" styleClass="parent1" visible="false">
          <children>
             <Button layoutX="201.0" layoutY="167.0" mnemonicParsing="false" onAction="#addParamShifrText" prefHeight="45.0" prefWidth="126.0" styleClass="login-btn" text="Подтвердить" />
             <Label fx:id="topLabel12111" layoutX="201.0" layoutY="-3.0" prefHeight="35.0" prefWidth="140.0" text="Шифрование текста" textFill="#c2c2c2" wrapText="true">
@@ -116,17 +116,20 @@
             </Label>
          </children>
       </Pane>
-      <Pane fx:id="ECPPane" layoutX="604.0" layoutY="288.0" prefHeight="226.0" prefWidth="341.0" styleClass="parent1">
+      <Pane fx:id="ECPPane" layoutX="604.0" layoutY="288.0" prefHeight="226.0" prefWidth="485.0" styleClass="parent1" visible="false">
          <children>
-            <Button layoutX="201.0" layoutY="167.0" mnemonicParsing="false" onAction="#addParamECP" prefHeight="45.0" prefWidth="126.0" styleClass="login-btn" text="Подтвердить" />
+            <Button layoutX="24.0" layoutY="176.0" mnemonicParsing="false" onAction="#addParamECP" prefHeight="45.0" prefWidth="147.0" styleClass="login-btn" text="Подтвердить" />
             <Label fx:id="topLabel1211" layoutX="302.0" layoutY="-3.0" prefHeight="35.0" prefWidth="40.0" text="ЭЦП" textFill="#c2c2c2" wrapText="true">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
-            <TextField fx:id="textDHP" layoutX="21.0" layoutY="42.0" prefHeight="45.0" prefWidth="147.0" promptText="Простой модуль" styleClass="txtfield" />
-            <TextField fx:id="textDHQ" layoutX="180.0" layoutY="42.0" prefHeight="45.0" prefWidth="140.0" promptText="Генератор" styleClass="txtfield" />
-            <TextField fx:id="textDHPrivateKey" layoutX="21.0" layoutY="106.0" prefHeight="45.0" prefWidth="300.0" promptText="Приватное число" styleClass="txtfield" />
+            <TextField fx:id="textDHP" layoutX="24.0" layoutY="11.0" prefHeight="45.0" prefWidth="147.0" promptText="Простой модуль" styleClass="txtfield" />
+            <TextField fx:id="textDHQ" layoutX="24.0" layoutY="67.0" prefHeight="45.0" prefWidth="147.0" promptText="Генератор" styleClass="txtfield" />
+            <TextField fx:id="textDHPrivateKey" layoutX="24.0" layoutY="123.0" prefHeight="45.0" prefWidth="147.0" promptText="Приватное число" styleClass="txtfield" />
+            <Button layoutX="352.0" layoutY="173.0" mnemonicParsing="false" onAction="#setEmail" prefHeight="45.0" prefWidth="126.0" styleClass="login-btn" text="Сменить Аккаунт" />
+            <ListView fx:id="listViewDHMail" layoutX="188.0" layoutY="33.0" onMouseClicked="#getECPParam" prefHeight="133.0" prefWidth="288.0" />
+            <ChoiceBox fx:id="mailChoice" layoutX="188.0" layoutY="173.0" prefHeight="45.0" prefWidth="150.0" />
          </children>
       </Pane>
     </children>

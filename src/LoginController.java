@@ -1,8 +1,10 @@
+
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.ResourceBundle;
 
+import helpers.MyException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +22,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
+import javax.swing.*;
 import java.sql.DriverManager;
 
 /**
@@ -173,9 +176,13 @@ public class LoginController implements Initializable {
 
                 MainWindowController.stage = stage;
                 stage.show();
-            }
+            }else
+                throw new MyException.AuthorizationException("Введены некорректные данные! " +
+                        "Не удалось авторизоваться под логином : ",loginField.getText());
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (MyException.AuthorizationException e) {
+            JOptionPane.showMessageDialog(new JFrame("Exception"),e.getMessage() + e.getLogin());
         }
     }
 

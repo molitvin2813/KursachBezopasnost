@@ -95,6 +95,11 @@
                </font>
             </Label>
             <ChoiceBox fx:id="choiceEmailFrom" layoutX="229.0" layoutY="2.0" prefHeight="35.0" prefWidth="205.0" />
+            <Button layoutX="229.0" layoutY="493.0" mnemonicParsing="false" onAction="#sendPublicKeyDH" prefHeight="45.0" prefWidth="265.0" styleClass="login-btn" text="Отправить публичный ключ DH">
+               <font>
+                  <Font name="Microsoft Sans Serif" size="15.0" />
+               </font>
+            </Button>
          </children>
       </Pane>
    </children>

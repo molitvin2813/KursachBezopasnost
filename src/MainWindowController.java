@@ -45,15 +45,15 @@ public class MainWindowController implements Initializable {
     @FXML
     private AnchorPane paneForAddNewMail;
     @FXML
-    private ChoiceBox emailChoiceForDelete;
+    private ChoiceBox<String> emailChoiceForDelete;
     @FXML
     private TextField passwordAddEMail;
     @FXML
     private TextField loginAddEmail;
     @FXML
-    private ListView emailListView;
+    private ListView<String> emailListView;
     @FXML
-    private ChoiceBox emailChoice;
+    private ChoiceBox<String> emailChoice;
     @FXML
     private Label labelFolders;
     @FXML
@@ -61,7 +61,7 @@ public class MainWindowController implements Initializable {
     @FXML
     private HBox top;
     @FXML
-    private ChoiceBox folderChoice;
+    private ChoiceBox<String> folderChoice;
 
     private ReadEmail readEmail;
 
@@ -74,38 +74,11 @@ public class MainWindowController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
-        //readEmail = new ReadEmail();
-        //emailListView.setItems(readEmail.readEmailFromServer());
-
-        emailChoice.setItems(updateDataChoiceBox());
-        emailChoiceForDelete.setItems(updateDataChoiceBox());
+        emailChoice.setItems(HelpClass.updateDataChoiceBox());
+        emailChoiceForDelete.setItems(HelpClass.updateDataChoiceBox());
         readEmail = new ReadEmail();
 
         makeStageDragable();
-    }
-
-    /**
-     * Вспомогательный метод, который выполняет запрос на получение email адресов,
-     * а после формирует из них список, который необходим для ChoiceBox
-     * @return ObservableList<String> список адресов
-     */
-    private ObservableList<String> updateDataChoiceBox(){
-        String query = "SELECT user_email.email FROM user_email " +
-                "WHERE account_table_id_account =" + LoginController.idUser+";";
-
-        ObservableList<String> emailList = FXCollections.observableArrayList();
-        try {
-            LoginController.rs = LoginController.stmt.executeQuery(query);
-            while(LoginController.rs.next()){
-                emailList.add(LoginController.rs.getString("email"));
-
-            }
-
-            return emailList;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
     }
 
     private void makeStageDragable() {
@@ -156,7 +129,7 @@ public class MainWindowController implements Initializable {
      */
     @FXML
     private void minimize_stage(MouseEvent event) {
-        this.stage.setIconified(true);
+        stage.setIconified(true);
     }
 
     /**
@@ -188,20 +161,10 @@ public class MainWindowController implements Initializable {
         readEmail.setIMAP_AUTH_EMAIL(emailChoice.getValue().toString());
         readEmail.setIMAP_AUTH_PWD(password);
         readEmail.setIMAP_Port("993");
-        readEmail.setIMAP_Server(getIMAPServer(readEmail.getIMAP_AUTH_EMAIL()));
+        readEmail.setIMAP_Server(HelpClass.getIMAPServer(readEmail.getIMAP_AUTH_EMAIL()));
 
-        folderChoice.setItems(readEmail.getFolderList());
+        folderChoice.setItems( readEmail.getFolderList());
         emailListView.setItems(null);
-    }
-
-    /**
-     * Вспомогательная функция для получения сервера IMAP
-     * @param mail почта пользователя, которую он выбрал
-     * @return адрес сервера IMAP
-     */
-    private String getIMAPServer(String mail){
-        String[] array = mail.split("@");
-        return "imap."+array[1];
     }
 
     /**
@@ -212,10 +175,7 @@ public class MainWindowController implements Initializable {
     private void showAddEMailPanel(ActionEvent event){
         paneForAddNewMail.setVisible(switcher);
         paneForDeleteMail.setVisible(switcher);
-        if(switcher)
-            switcher=false;
-        else
-            switcher=true;
+        switcher= !switcher;
     }
     JFrame frame = new JFrame("JOptionPane showMessageDialog example");
     /**
@@ -235,7 +195,6 @@ public class MainWindowController implements Initializable {
             JOptionPane.showMessageDialog(frame, "Аккаунт успешно добавлен");
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(frame, "Не удалось добавить аккаунт");
-            e.printStackTrace();
         }
     }
 
@@ -254,10 +213,10 @@ public class MainWindowController implements Initializable {
             JOptionPane.showMessageDialog(frame, "Аккаунт успешно удален");
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(frame, "Не удалось удалить аккаунт ");
-            e.printStackTrace();
+
         }
-        emailChoice.setItems(updateDataChoiceBox());
-        emailChoiceForDelete.setItems(updateDataChoiceBox());
+        emailChoice.setItems(HelpClass.updateDataChoiceBox());
+        emailChoiceForDelete.setItems(HelpClass.updateDataChoiceBox());
     }
 
     /**
@@ -295,8 +254,15 @@ public class MainWindowController implements Initializable {
      */
     @FXML
     private void choiceFolder(ActionEvent actionEvent){
-        readEmail.setCurrentFolder(folderChoice.getValue().toString());
-        emailListView.setItems(readEmail.readEmailFromServer());
+        try {
+            readEmail.setCurrentFolder(folderChoice.getValue().toString());
+
+            emailListView.setItems(readEmail.readEmailFromServer());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(frame,e.getMessage());
+        }
     }
 
     @FXML
