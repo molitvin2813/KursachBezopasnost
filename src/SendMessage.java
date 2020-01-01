@@ -19,10 +19,12 @@ import javafx.stage.StageStyle;
 import shifr.DES;
 import shifr.DiffieHellman;
 import shifr.RSA;
+import shifr.SHA2;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.List;
@@ -149,31 +151,31 @@ public class SendMessage implements Initializable {
     @FXML
     private void btnSendMessage(ActionEvent actionEvent) {
 
-        String query = "SELECT * FROM user_email WHERE email = '" + choiceEmailFrom.getValue().toString() +"';";
-        String password ="";
+        String query = "SELECT * FROM user_email WHERE email = '" + choiceEmailFrom.getValue().toString() + "';";
+        String password = "";
 
         try {
             LoginController.rs = LoginController.stmt.executeQuery(query);
             LoginController.rs.next();
-            password= (LoginController.rs.getString("password_from_email"));
+            password = (LoginController.rs.getString("password_from_email"));
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        SendEmail.SMTP_SERVER    = HelpClass.getSMTPServer(choiceEmailFrom.getValue().toString());
+        SendEmail.SMTP_SERVER = HelpClass.getSMTPServer(choiceEmailFrom.getValue().toString());
 
-        SendEmail.SMTP_Port      = "465";
-        SendEmail.EMAIL_FROM     = choiceEmailFrom.getValue().toString();
+        SendEmail.SMTP_Port = "465";
+        SendEmail.EMAIL_FROM = choiceEmailFrom.getValue().toString();
         SendEmail.SMTP_AUTH_USER = choiceEmailFrom.getValue().toString();
-        SendEmail.SMTP_AUTH_PWD  = password;
-        SendEmail.REPLY_TO       = choiceEmailFrom.getValue().toString();
+        SendEmail.SMTP_AUTH_PWD = password;
+        SendEmail.REPLY_TO = choiceEmailFrom.getValue().toString();
 
 
         SendEmail se = new SendEmail(txtFieldEmailTo.getText(), txtFieldHeader.getText());
-        if(!ShifrManager.shifrText)
+        if (!ShifrManager.shifrText && !ShifrManager.ECP)
             se.sendMessage(htmlEditorTextMessage.getHtmlText());
-        else{
-            DES des = new DES(htmlEditorTextMessage.getHtmlText(),ShifrManager.DESEncryptKey);
+        else if (ShifrManager.shifrText) {
+            DES des = new DES(htmlEditorTextMessage.getHtmlText(), ShifrManager.DESEncryptKey);
             RSA rsa = new RSA();
 
             String text = des.EncodeDES(); // зашифрованнный текст
@@ -183,15 +185,25 @@ public class SendMessage implements Initializable {
             rsa.setP(ShifrManager.RSAP);
             rsa.setQ(ShifrManager.RSAQ);
             rsa.setInputData(key);
-            List<String> desKeyEncrypted =  rsa.RSAEncode();
+            List<String> desKeyEncrypted = rsa.RSAEncode();
 
-            se.sendMessage(text, desKeyEncrypted, rsa.getD(),rsa.getN());
+            se.sendMessage(text, desKeyEncrypted, rsa.getD(), rsa.getN());
+        } else if (ShifrManager.ECP) {
+            DiffieHellman diffieHellman = new DiffieHellman(ShifrManager.DHP, ShifrManager.DHQ, ShifrManager.privateNumber);
+            BigInteger privateKey = diffieHellman.calculatePrivateKey(new BigInteger(ShifrManager.ECPParam[0]));
+            byte b;
+            byte[] hash = SHA2.hash(htmlEditorTextMessage.getHtmlText().getBytes());
+            String hashECP ="";
+            for (byte s : hash){
+                b= (byte) (s^Byte.parseByte(privateKey.toString()));
+                hashECP += b+",";
+            }
+
+            se.sendMessage(htmlEditorTextMessage.getHtmlText() + "*end*" + hashECP);
+            SendEmail.FILE_PATH = null;
+            JOptionPane.showMessageDialog(new JFrame(""), "Сообщение отправлено");
         }
-        SendEmail.FILE_PATH      = null;
-        JOptionPane.showMessageDialog(frame, "Сообщение отправлено");
     }
-
-    JFrame frame = new JFrame("JOptionPane showMessageDialog example");
 
     /**
      * Метод, который реализует получение пути к файлу на машине
@@ -199,7 +211,7 @@ public class SendMessage implements Initializable {
      */
     @FXML
     private void getFile(ActionEvent actionEvent) {
-        FileDialog fdlg = new FileDialog(frame, "Open file", FileDialog.LOAD);
+        FileDialog fdlg = new FileDialog(new JFrame(""), "Open file", FileDialog.LOAD);
         fdlg.show();
         SendEmail.FILE_PATH      = fdlg.getDirectory() + fdlg.getFile();
     }

@@ -1,4 +1,5 @@
 import java.io.IOException;
+import java.math.BigInteger;
 import java.net.URL;
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -6,6 +7,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import WorkWithEmail.ReadEmail;
+import com.sun.org.apache.xml.internal.security.algorithms.implementations.SignatureDSA;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,6 +28,7 @@ import javafx.scene.web.WebView;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import shifr.DES;
+import shifr.DiffieHellman;
 import shifr.RSA;
 import shifr.SHA2;
 
@@ -270,15 +273,44 @@ public class MainWindowController implements Initializable {
         if(readEmail.getCurrentFolder()!=null) {
             int id = emailListView.getSelectionModel().getSelectedIndex();
             WebEngine webEngine = messageView.getEngine();
-            if(!ShifrManager.shifrText) {
+            if(!ShifrManager.shifrText&& !ShifrManager.ECP) {
                 webEngine.loadContent(readEmail.getBodyMessage(id), "text/html");
-            }else{
+            }else if(ShifrManager.shifrText){
                 String text = readEmail.getBodyMessage(id);
                 webEngine.loadContent(getDecodeText(text), "text/html");
+            } else if(ShifrManager.ECP){
+                String text = readEmail.getBodyMessage(id);
+                webEngine.loadContent(text,"text/html");
+                if(checkECP(text))
+                    JOptionPane.showMessageDialog(new JFrame(""), "Электронная подпись верна");
             }
         }
     }
 
+    /**
+     * метод для проверки электронной подписи
+     * @param text текст письма
+     * @return boolean верна/не верна
+     */
+    private boolean checkECP(String text){
+        //arr[0] - текст
+        //arr[1] - хеш
+        String[] arr = text.split("\\*end\\*");
+        String[] newHash = arr[1].split(","); // вспомогательная переменная для получения хеши из письма
+        byte[] h= new byte[newHash.length]; // хеш который нам пришел
+        int i=0;
+        DiffieHellman diffieHellman = new DiffieHellman(ShifrManager.DHP, ShifrManager.DHQ, ShifrManager.privateNumber);
+        BigInteger privateKey = diffieHellman.calculatePrivateKey(new BigInteger(ShifrManager.ECPParam[0]));
+
+        for(String hash: newHash){
+            h[i]= (byte) (Byte.parseByte(hash)^Byte.parseByte(privateKey.toString()));
+            i++;
+        }
+
+        byte[] hash = SHA2.hash(arr[0].getBytes());
+
+        return Arrays.equals(h,hash);
+    }
     /**
      * метод, который расшифровывает текст
      * @param text зашифрованный текст

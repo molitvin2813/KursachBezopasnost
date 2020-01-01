@@ -92,7 +92,7 @@ public class ShifrManager implements Initializable {
     public static int privateNumber=0;
 
 
-    private String [] ECPParam;
+    public static String [] ECPParam;
     private ReadEmail readEmail;
     private double xOffSet = 0;
     private double yOffSet = 0;
@@ -242,7 +242,7 @@ public class ShifrManager implements Initializable {
         if(readEmail.getCurrentFolder()!=null) {
             int id = listViewDHMail.getSelectionModel().getSelectedIndex();
 
-            // ECPParam[0] публичный ключ
+            // ECPParam[0] публичный ключ второго пользователя
             // ECPParam[1] простой модуль
             // ECPParam[2] генератор
             ECPParam =  readEmail.getBodyMessage(id).split("\\*end\\*");
